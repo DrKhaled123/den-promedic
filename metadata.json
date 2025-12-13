@@ -1,0 +1,5 @@
+{
+  "name": "DentOS Clinical",
+  "description": "A professional clinical decision support system for dentists featuring drug guides, dose calculators, procedural guidelines, and bilingual patient instructions.",
+  "requestFramePermissions": []
+}
