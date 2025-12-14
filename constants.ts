@@ -134,7 +134,7 @@ export const DRUGS: Drug[] = [
     categoryAr: 'مسكن (أفيوني)',
     descriptionEn: 'For severe pain. Addictive potential. Prescription only.',
     descriptionAr: 'للآلام الشديدة. يسبب الإدمان. يحتاج وصفة.',
-    doseEn: '50-100mg q6h',
+    doseEn: '500-100mg q6h',
     doseAr: '50-100 مجم كل 6 ساعات'
   },
   {
@@ -149,7 +149,7 @@ export const DRUGS: Drug[] = [
     doseAr: '500 مجم كل 8 ساعات'
   },
 
-  // --- Antibiotics ---
+  // --- Antibiotics (Oral) ---
   {
     id: 'ab1',
     genericName: 'Amoxicillin',
@@ -197,13 +197,13 @@ export const DRUGS: Drug[] = [
   {
     id: 'ab5',
     genericName: 'Metronidazole',
-    brandNames: ['Flagyl', 'Amrizole'],
+    brandNames: ['Flagyl', 'Amrizole', 'Metrogyl'],
     category: 'Antibiotic',
     categoryAr: 'مضاد حيوي',
-    descriptionEn: 'Anaerobes only. NO ALCOHOL.',
-    descriptionAr: 'للاهوائيات فقط. ممنوع الكحول.',
-    doseEn: '500mg q8h',
-    doseAr: '500 مجم كل 8 ساعات'
+    descriptionEn: 'Anaerobes/Protozoa. Disulfiram reaction with alcohol. Metallic taste.',
+    descriptionAr: 'للاهوائيات والطفيليات. تفاعل خطير مع الكحول (Disulfiram-like). طعم معدني.',
+    doseEn: '500mg q8h (Max 14 days)',
+    doseAr: '500 مجم كل 8 ساعات (حد أقصى 14 يوم)'
   },
   {
     id: 'ab6',
@@ -211,8 +211,8 @@ export const DRUGS: Drug[] = [
     brandNames: ['Ciprobay'],
     category: 'Antibiotic',
     categoryAr: 'مضاد حيوي',
-    descriptionEn: 'Severe gum infections. Avoid in children.',
-    descriptionAr: 'لالتهابات اللثة الشديدة. لا يستخدم للأطفال.',
+    descriptionEn: 'Severe gum infections. Avoid in children/pregnancy (Cartilage).',
+    descriptionAr: 'لالتهابات اللثة الشديدة. ممنوع للأطفال والحوامل (يؤثر على الغضاريف).',
     doseEn: '500mg q12h',
     doseAr: '500 مجم كل 12 ساعة'
   },
@@ -222,10 +222,218 @@ export const DRUGS: Drug[] = [
     brandNames: ['Vibramycin'],
     category: 'Antibiotic',
     categoryAr: 'مضاد حيوي',
-    descriptionEn: 'Gum infections. Avoid in pregnancy/children.',
-    descriptionAr: 'لالتهابات اللثة. ممنوع للحوامل والأطفال.',
+    descriptionEn: 'Gum infections. Avoid in pregnancy/children (Stains teeth).',
+    descriptionAr: 'لالتهابات اللثة. ممنوع للحوامل والأطفال (يصبغ الأسنان).',
     doseEn: '100mg daily',
     doseAr: '100 مجم يومياً'
+  },
+
+  // --- New Antibiotics (Injectable/Broad Spectrum) ---
+  {
+    id: 'ab8',
+    genericName: 'Ceftriaxone',
+    brandNames: ['Rocephin', 'Epicephin', 'Cefotrix', 'Longacef'],
+    category: 'Antibiotic (Cephalosporin)',
+    categoryAr: 'مضاد حيوي (سيفالوسبورين)',
+    descriptionEn: '3rd Gen. Pneumonia, Meningitis, Sepsis. Single dose for Gonorrhea.',
+    descriptionAr: 'جيل ثالث. للالتهاب الرئوي، السحايا، تسمم الدم. جرعة واحدة للسيلان.',
+    doseEn: '1-2g IV/IM q24h',
+    doseAr: '1-2 جرام وريد/عضل كل 24 ساعة'
+  },
+  {
+    id: 'ab9',
+    genericName: 'Cofotaxime',
+    brandNames: ['Claforan', 'Ceftax', 'Taxim'],
+    category: 'Antibiotic (Cephalosporin)',
+    categoryAr: 'مضاد حيوي (سيفالوسبورين)',
+    descriptionEn: '3rd Gen. Good CNS penetration. Short half-life (q8h).',
+    descriptionAr: 'جيل ثالث. اختراق جيد للسائل الدماغي. عمر نصفي قصير (كل 8 ساعات).',
+    doseEn: '1-2g IV/IM q8h',
+    doseAr: '1-2 جرام وريد/عضل كل 8 ساعات'
+  },
+  {
+    id: 'ab10',
+    genericName: 'Ampicillin/Sulbactam',
+    brandNames: ['Unasyn', 'Ampictam', 'Sulbin', 'Ultracillin'],
+    category: 'Antibiotic (Penicillin)',
+    categoryAr: 'مضاد حيوي (بنسلين)',
+    descriptionEn: 'Beta-lactamase inhibitor combo. Intra-abdominal, skin infections.',
+    descriptionAr: 'مثبط بيتا لاكتاماز. لعدوى البطن والجلد والأنسجة الرخوة.',
+    doseEn: '1.5-3g IV q6h',
+    doseAr: '1.5-3 جرام وريد كل 6 ساعات'
+  },
+  {
+    id: 'ab11',
+    genericName: 'Cefepime',
+    brandNames: ['Maxipime', 'Cifipime'],
+    category: 'Antibiotic (Cephalosporin)',
+    categoryAr: 'مضاد حيوي (سيفالوسبورين)',
+    descriptionEn: '4th Gen. Severe hospital-acquired infections. Neurotoxicity risk in renal failure.',
+    descriptionAr: 'جيل رابع. لعدوى المستشفيات الشديدة. خطر سمية عصبية مع الفشل الكلوي.',
+    doseEn: '1-2g IV q8-12h',
+    doseAr: '1-2 جرام وريد كل 8-12 ساعة'
+  },
+
+  // --- Neurological Agents ---
+  {
+    id: 'neur1',
+    genericName: 'Gabapentin',
+    brandNames: ['Gaptin', 'Conventin', 'Neurontin', 'Lepticure'],
+    category: 'Neurological / Anticonvulsant',
+    categoryAr: 'أعصاب / مضاد للصرع',
+    descriptionEn: 'Neuropathic pain, PHN, Epilepsy. Titrate slowly to avoid dizziness.',
+    descriptionAr: 'لألم الأعصاب، الحزام الناري، الصرع. ابدأ بجرعة صغيرة لتجنب الدوخة.',
+    doseEn: 'Start 300mg day 1, ↑ to 900-1800mg/day',
+    doseAr: 'ابدأ 300 مجم يوم 1، زد تدريجياً لـ 900-1800 مجم/يوم'
+  },
+  {
+    id: 'neur2',
+    genericName: 'Levetiracetam',
+    brandNames: ['Keppra', 'Levetiracetam Generics'],
+    category: 'Neurological / Anticonvulsant',
+    categoryAr: 'أعصاب / مضاد للصرع',
+    descriptionEn: 'Focal/Generalized seizures. Behavioral side effects (aggression).',
+    descriptionAr: 'للصرع البؤري والعام. قد يسبب تغيرات سلوكية (عدوانية).',
+    doseEn: '500mg BID (Maintenance 1000-3000mg/day)',
+    doseAr: '500 مجم مرتين يومياً'
+  },
+
+  // --- Antiemetics ---
+  {
+    id: 'ae1',
+    genericName: 'Ondansetron',
+    brandNames: ['Zofran', 'Danset', 'Onset'],
+    category: 'Antiemetic',
+    categoryAr: 'مضاد للقيء',
+    descriptionEn: 'Post-op/Chemo nausea. QT prolongation risk.',
+    descriptionAr: 'لقيء ما بعد العمليات/الكيماوي. خطر على كهرباء القلب (QT).',
+    doseEn: '4-8mg IV/PO q8h',
+    doseAr: '4-8 مجم وريد/فم كل 8 ساعات'
+  },
+  {
+    id: 'ae2',
+    genericName: 'Metoclopramide',
+    brandNames: ['Primperan', 'Cerucal'],
+    category: 'Antiemetic',
+    categoryAr: 'مضاد للقيء',
+    descriptionEn: 'Gastroparesis, GERD. Risk of Extrapyramidal symptoms (Dystonia).',
+    descriptionAr: 'لشلل المعدة والارتجاع. خطر أعراض خارج هرمية (تشنجات) خاصة الأطفال.',
+    doseEn: '10mg IV/PO q8h (Max 5 days)',
+    doseAr: '10 مجم وريد/فم كل 8 ساعات'
+  },
+  {
+    id: 'ae3',
+    genericName: 'Domperidone',
+    brandNames: ['Motilium', 'Gastromotil'],
+    category: 'Antiemetic',
+    categoryAr: 'مضاد للقيء',
+    descriptionEn: 'Nausea/Dyspepsia. QT risk. Contraindicated with CYP3A4 inhibitors.',
+    descriptionAr: 'للغثيان وعسر الهضم. ممنوع مع مثبطات CYP3A4 (مثل الفلوكونازول).',
+    doseEn: '10mg PO q8h',
+    doseAr: '10 مجم فم كل 8 ساعات'
+  },
+
+  // --- Cardiovascular (Anticoagulants/Antiplatelets/Arrhythmia) ---
+  {
+    id: 'cv1',
+    genericName: 'Amiodarone',
+    brandNames: ['Cordarone'],
+    category: 'Antiarrhythmic',
+    categoryAr: 'مضاد لعدم انتظام ضربات القلب',
+    descriptionEn: 'Life-threatening arrhythmias. Toxicity: Thyroid, Lung, Liver, Cornea.',
+    descriptionAr: 'لضربات القلب الخطيرة. سمية محتملة: الغدة الدرقية، الرئة، الكبد، العين.',
+    doseEn: 'Maintenance 200-400mg/day',
+    doseAr: 'الاستمرارية 200-400 مجم/يوم'
+  },
+  {
+    id: 'cv2',
+    genericName: 'Clopidogrel',
+    brandNames: ['Plavix', 'Clopidogrel'],
+    category: 'Antiplatelet',
+    categoryAr: 'مضاد للصفائح',
+    descriptionEn: 'Post-stent/MI. Stop 5-7 days pre-op. Interactions with Omeprazole.',
+    descriptionAr: 'بعد الدعامات/الجلطات. يوقف 5-7 أيام قبل الجراحة. يتفاعل مع الأوميبرازول.',
+    doseEn: '75mg daily',
+    doseAr: '75 مجم يومياً'
+  },
+  {
+    id: 'cv3',
+    genericName: 'Aspirin',
+    brandNames: ['Aspirin Protect', 'Aspocid'],
+    category: 'Antiplatelet / NSAID',
+    categoryAr: 'مضاد للصفائح / مسكن',
+    descriptionEn: 'Cardio-protection. GI bleeding risk. Stop 5-7 days pre-op (Major surgery).',
+    descriptionAr: 'حماية للقلب. خطر نزيف المعدة. يوقف 5-7 أيام قبل الجراحات الكبرى.',
+    doseEn: '75-100mg daily (Prevention)',
+    doseAr: '75-100 مجم يومياً (وقاية)'
+  },
+  {
+    id: 'cv4',
+    genericName: 'Heparin (Unfractionated)',
+    brandNames: ['Heparin'],
+    category: 'Anticoagulant',
+    categoryAr: 'مضاد للتجلط',
+    descriptionEn: 'Acute VTE/ACS. Monitor aPTT. Risk of HIT.',
+    descriptionAr: 'للجلطات الحادة. يحتاج مراقبة تحليل aPTT. خطر نقص الصفائح (HIT).',
+    doseEn: 'Protocol based (IV Infusion)',
+    doseAr: 'حسب البروتوكول (وريد)'
+  },
+  {
+    id: 'cv5',
+    genericName: 'Enoxaparin',
+    brandNames: ['Clexane', 'Lovenox'],
+    category: 'Anticoagulant (LMWH)',
+    categoryAr: 'مضاد للتجلط',
+    descriptionEn: 'VTE prophylaxis/treatment. Renally adjusted. No monitoring usually.',
+    descriptionAr: 'للوقاية/علاج الجلطات. يعدل لمرضى الكلى. لا يحتاج مراقبة روتينية.',
+    doseEn: '40mg SC daily (Prophylaxis)',
+    doseAr: '40 مجم تحت الجلد يومياً (وقاية)'
+  },
+  {
+    id: 'cv6',
+    genericName: 'Apixaban',
+    brandNames: ['Eliquis'],
+    category: 'Anticoagulant (DOAC)',
+    categoryAr: 'مضاد للتجلط',
+    descriptionEn: 'Stroke prevention/VTE. No INR needed. Stop 48h pre-op (High risk).',
+    descriptionAr: 'للوقاية من الجلطات. لا يحتاج تحليل سيولة. يوقف 48 ساعة قبل الجراحة.',
+    doseEn: '5mg BID',
+    doseAr: '5 مجم مرتين يومياً'
+  },
+  {
+    id: 'cv7',
+    genericName: 'Fondaparinux',
+    brandNames: ['Arixtra'],
+    category: 'Anticoagulant',
+    categoryAr: 'مضاد للتجلط',
+    descriptionEn: 'VTE prophylaxis. Synthetic anti-Xa. No HIT risk.',
+    descriptionAr: 'للوقاية من الجلطات. لا يسبب نقص الصفائح المناعي (HIT).',
+    doseEn: '2.5mg SC daily',
+    doseAr: '2.5 مجم تحت الجلد يومياً'
+  },
+
+  // --- GI Agents ---
+  {
+    id: 'gi1',
+    genericName: 'Lactulose',
+    brandNames: ['Duphalac', 'Sedolac'],
+    category: 'Laxative',
+    categoryAr: 'ملين',
+    descriptionEn: 'Constipation, Hepatic Encephalopathy. Safe in pregnancy.',
+    descriptionAr: 'للإمساك والغيبوبة الكبدية. آمن للحوامل.',
+    doseEn: '15-30ml daily',
+    doseAr: '15-30 مل يومياً'
+  },
+  {
+    id: 'gi2',
+    genericName: 'Omeprazole / Pantoprazole',
+    brandNames: ['Losec', 'Controloc', 'Omez', 'Zurcal'],
+    category: 'PPI (Stomach)',
+    categoryAr: 'معدة (PPI)',
+    descriptionEn: 'GERD, Ulcers. Omeprazole inhibits Clopidogrel (Use Pantoprazole).',
+    descriptionAr: 'للحموضة والقرحة. الأوميبرازول يضعف البلافيكس (استخدم بانتوبرازول).',
+    doseEn: '20-40mg daily (Empty stomach)',
+    doseAr: '20-40 مجم يومياً (على معدة فارغة)'
   },
 
   // --- Antifungals ---

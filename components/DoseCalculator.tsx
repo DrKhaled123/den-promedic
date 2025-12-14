@@ -1,16 +1,26 @@
 import React, { useState, useMemo } from 'react';
 import { Calculator, Scale, AlertCircle, Syringe, Pill, Info, Stethoscope, Activity } from 'lucide-react';
 import { DRUGS } from '../constants';
+import { Drug } from '../types';
 
-// Define result types for strict type checking
-type Drug = typeof DRUGS[number];
+type ReferenceResult = { type: 'reference'; drug: Drug };
+type AnestheticResult = { type: 'anesthetic'; drug: Drug; maxMg: number; maxCartridges: number; mgPerCartridge: number; formula: string };
+type PediatricDailyResult = { type: 'pediatric_daily'; drug: Drug; minDaily?: number; maxDaily?: number; val?: number; notes: string };
+type PediatricDoseResult = { type: 'pediatric_dose'; drug: Drug; minDose: number; maxDose: number; freq: string; dailyMax?: number; notes: string };
+
+interface RegimenItem {
+    label: string;
+    val: string;
+}
+
+type RegimenResult = { type: 'regimen'; drug: Drug; items: RegimenItem[]; notes: string };
 
 type CalculationResult = 
-    | { type: 'reference'; drug: Drug }
-    | { type: 'anesthetic'; drug: Drug; maxMg: number; maxCartridges: number; mgPerCartridge: number; formula: string }
-    | { type: 'pediatric_daily'; drug: Drug; minDaily?: number; maxDaily?: number; val?: number; notes: string }
-    | { type: 'pediatric_dose'; drug: Drug; minDose: number; maxDose: number; freq: string; dailyMax?: number; notes: string }
-    | { type: 'regimen'; drug: Drug; items: { label: string; val: string }[]; notes: string }
+    | ReferenceResult
+    | AnestheticResult
+    | PediatricDailyResult
+    | PediatricDoseResult
+    | RegimenResult
     | null;
 
 const DoseCalculator: React.FC = () => {
@@ -19,8 +29,8 @@ const DoseCalculator: React.FC = () => {
     const [selectedDrugId, setSelectedDrugId] = useState<string>(DRUGS[0].id);
 
     // Group drugs by category for the dropdown
-    const groupedDrugs = useMemo(() => {
-        const groups: Record<string, typeof DRUGS> = {};
+    const groupedDrugs = useMemo<Record<string, Drug[]>>(() => {
+        const groups: Record<string, Drug[]> = {};
         DRUGS.forEach(drug => {
             if (!groups[drug.category]) groups[drug.category] = [];
             groups[drug.category].push(drug);
@@ -76,13 +86,12 @@ const DoseCalculator: React.FC = () => {
             };
         }
 
-        // --- Pediatric Antibiotics & Analgesics Logic ---
-        // Note: These calculations are for pediatric oral suspensions/syrups generally
+        // --- Pediatric Antibiotics, Analgesics & Neurological Logic ---
         
         // Amoxicillin (ab1)
         if (drug.id === 'ab1') {
             const minDaily = Math.round(weightKg * 20);
-            const maxDaily = Math.round(weightKg * 50); // Dental infections 20-50mg/kg
+            const maxDaily = Math.round(weightKg * 50);
             return {
                 type: 'pediatric_daily',
                 drug,
@@ -92,7 +101,7 @@ const DoseCalculator: React.FC = () => {
             };
         }
 
-        // Augmentin (ab2) - Based on Amoxicillin component usually 20-40mg/kg/day
+        // Augmentin (ab2)
         if (drug.id === 'ab2') {
             const minDaily = Math.round(weightKg * 20);
             const maxDaily = Math.round(weightKg * 40);
@@ -101,14 +110,14 @@ const DoseCalculator: React.FC = () => {
                 drug,
                 minDaily,
                 maxDaily,
-                notes: 'Based on Amoxicillin component. Divided every 12 hours (BID) or 8 hours (TID) depending on formulation.'
+                notes: 'Based on Amoxicillin component. Divided q12h or q8h depending on formulation.'
             };
         }
 
-        // Clindamycin (ab3) - 8-20 mg/kg/day
+        // Clindamycin (ab3)
         if (drug.id === 'ab3') {
             const minDaily = Math.round(weightKg * 8);
-            const maxDaily = Math.round(weightKg * 20); // Up to 25 in severe
+            const maxDaily = Math.round(weightKg * 20);
             return {
                 type: 'pediatric_daily',
                 drug,
@@ -118,7 +127,7 @@ const DoseCalculator: React.FC = () => {
             };
         }
 
-        // Azithromycin (ab4) - 10mg/kg day 1, 5mg/kg days 2-5
+        // Azithromycin (ab4)
         if (drug.id === 'ab4') {
             const day1 = Math.round(weightKg * 10);
             const day2_5 = Math.round(weightKg * 5);
@@ -133,18 +142,137 @@ const DoseCalculator: React.FC = () => {
             };
         }
 
-        // Metronidazole (ab5) - 30mg/kg/day
+        // Metronidazole (ab5) - 30-50mg/kg/day for Amebiasis, 30mg for Anaerobes
         if (drug.id === 'ab5') {
             const daily = Math.round(weightKg * 30);
             return {
                 type: 'pediatric_daily',
                 drug,
                 val: daily,
-                notes: 'Divided into 4 doses (q6h). Avoid alcohol.'
+                notes: 'Divided into 3-4 doses (q6-8h). Avoid alcohol.'
             };
         }
 
-        // Ibuprofen (an1) - 5-10mg/kg per dose
+        // --- Injectable Antibiotics ---
+        // Ceftriaxone (ab8)
+        if (drug.id === 'ab8') {
+            const minDaily = Math.round(weightKg * 50);
+            const maxDaily = Math.round(weightKg * 75);
+            return {
+                type: 'pediatric_daily',
+                drug,
+                minDaily,
+                maxDaily,
+                notes: 'Given IV/IM once daily (q24h). Max 2g/day generally.'
+            };
+        }
+
+        // Cefotaxime (ab9)
+        if (drug.id === 'ab9') {
+            const minDaily = Math.round(weightKg * 50);
+            const maxDaily = Math.round(weightKg * 100);
+            return {
+                type: 'pediatric_daily',
+                drug,
+                minDaily,
+                maxDaily,
+                notes: 'Divided q6-8h. Up to 150-200 mg/kg/day for severe meningitis.'
+            };
+        }
+
+        // Unasyn (ab10)
+        if (drug.id === 'ab10') {
+             const minDaily = Math.round(weightKg * 150);
+             const maxDaily = Math.round(weightKg * 300);
+             return {
+                 type: 'pediatric_daily',
+                 drug,
+                 minDaily,
+                 maxDaily,
+                 notes: 'Dosage based on Ampicillin component. Divided q6h.'
+             };
+        }
+
+        // Cefepime (ab11)
+        if (drug.id === 'ab11') {
+             const daily = Math.round(weightKg * 100); // 50mg/kg q12h
+             return {
+                 type: 'pediatric_daily',
+                 drug,
+                 val: daily,
+                 notes: '50 mg/kg every 12 hours. For meningitis/severe: every 8 hours.'
+             };
+        }
+
+        // --- Neurological Agents ---
+        // Gabapentin (neur1) - Child 3-12y
+        if (drug.id === 'neur1') {
+             const startDaily = Math.round(weightKg * 10);
+             const maintDaily = Math.round(weightKg * 30);
+             return {
+                 type: 'pediatric_daily',
+                 drug,
+                 minDaily: startDaily,
+                 maxDaily: maintDaily,
+                 notes: 'Titrate slowly. Start 10-15 mg/kg/day, up to 35-50 mg/kg/day. Divided TID.'
+             };
+        }
+        
+        // Levetiracetam (neur2)
+        if (drug.id === 'neur2') {
+             const daily = Math.round(weightKg * 40); // 20mg/kg BID = 40/day
+             return {
+                 type: 'pediatric_daily',
+                 drug,
+                 val: daily,
+                 notes: 'Start 20 mg/kg/day (divided BID), increase to 40-60 mg/kg/day.'
+             };
+        }
+
+        // --- Antiemetics ---
+        // Ondansetron (ae1)
+        if (drug.id === 'ae1') {
+             const dose = (weightKg * 0.1).toFixed(1);
+             return {
+                 type: 'pediatric_dose',
+                 drug,
+                 minDose: parseFloat(dose),
+                 maxDose: parseFloat(dose),
+                 freq: 'q8h',
+                 notes: '0.1 mg/kg IV/PO (Max 4mg/dose for children < 15kg).'
+             };
+        }
+
+        // Metoclopramide (ae2)
+        if (drug.id === 'ae2') {
+             const dose = (weightKg * 0.1).toFixed(1);
+             return {
+                 type: 'pediatric_dose',
+                 drug,
+                 minDose: parseFloat(dose),
+                 maxDose: parseFloat(dose),
+                 freq: 'q8h',
+                 dailyMax: Math.round(weightKg * 0.5),
+                 notes: 'Caution: Risk of EPS in children. Max 0.5 mg/kg/day.'
+             };
+        }
+
+         // Domperidone (ae3)
+         if (drug.id === 'ae3') {
+             const dose = (weightKg * 0.25).toFixed(1);
+             return {
+                 type: 'pediatric_dose',
+                 drug,
+                 minDose: parseFloat(dose),
+                 maxDose: parseFloat(dose),
+                 freq: '3-4 times daily',
+                 dailyMax: Math.round(weightKg * 2.4),
+                 notes: 'Max 2.4 mg/kg/day.'
+             };
+        }
+
+        // --- Analgesics ---
+        // Ibuprofen (an1)
         if (drug.id === 'an1') {
             const minDose = Math.round(weightKg * 5);
             const maxDose = Math.round(weightKg * 10);
@@ -160,7 +288,7 @@ const DoseCalculator: React.FC = () => {
             };
         }
 
-        // Paracetamol (an4) - 10-15mg/kg per dose
+        // Paracetamol (an4)
         if (drug.id === 'an4') {
             const minDose = Math.round(weightKg * 10);
             const maxDose = Math.round(weightKg * 15);
@@ -236,7 +364,7 @@ const DoseCalculator: React.FC = () => {
                                     >
                                         {Object.entries(groupedDrugs).map(([category, drugs]) => (
                                             <optgroup key={category} label={category}>
-                                                {drugs.map(drug => (
+                                                {(drugs as Drug[]).map(drug => (
                                                     <option key={drug.id} value={drug.id}>
                                                         {drug.genericName}
                                                     </option>
@@ -388,7 +516,7 @@ const DoseCalculator: React.FC = () => {
                                     </div>
 
                                     <div className="space-y-4 mb-6">
-                                        {(result as Extract<CalculationResult, { type: 'regimen' }>).items.map((item, idx) => (
+                                        {(result as RegimenResult).items.map((item, idx) => (
                                             <div key={idx} className="bg-white/60 p-4 rounded-xl flex justify-between items-center">
                                                 <span className="font-bold text-purple-900">{item.label}</span>
                                                 <span className="text-lg font-bold text-purple-600">{item.val}</span>

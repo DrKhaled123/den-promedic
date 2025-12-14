@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ChevronDown, Table as TableIcon } from 'lucide-react';
+import { ChevronDown, Search } from 'lucide-react';
 
 // --- Components (Helpers) ---
 
-const DetailSection: React.FC<{titleEn: string, titleAr: string, color: string, children: React.ReactNode}> = ({titleEn, titleAr, color, children}) => {
-    const [isOpen, setIsOpen] = useState(false);
+const DetailSection: React.FC<{titleEn: string, titleAr: string, color: string, children: React.ReactNode, isOpenDefault?: boolean}> = ({titleEn, titleAr, color, children, isOpenDefault = false}) => {
+    const [isOpen, setIsOpen] = useState(isOpenDefault);
     
     const colors: Record<string, string> = {
         blue: 'border-blue-200 bg-blue-50 text-blue-900',
@@ -18,7 +18,7 @@ const DetailSection: React.FC<{titleEn: string, titleAr: string, color: string, 
     };
 
     return (
-        <div className={`bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden transition-all duration-300 ${isOpen ? 'ring-2 ring-blue-500/20' : ''}`}>
+        <div className={`bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden transition-all duration-300 ${isOpen ? 'ring-2 ring-blue-500/20 shadow-md' : ''}`}>
             <button 
                 onClick={() => setIsOpen(!isOpen)}
                 className={`w-full flex items-center justify-between p-5 text-left transition-colors ${colors[color] || colors.slate}`}
@@ -30,7 +30,7 @@ const DetailSection: React.FC<{titleEn: string, titleAr: string, color: string, 
                 <ChevronDown className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} size={24} />
             </button>
             {isOpen && (
-                <div className="border-t border-slate-100">
+                <div className="border-t border-slate-100 animate-fade-in">
                     {children}
                 </div>
             )}
@@ -49,13 +49,13 @@ const BilingualContent: React.FC<{showEn: boolean, showAr: boolean, children: Re
 };
 
 const ContentSide: React.FC<{children: React.ReactNode, rtl?: boolean}> = ({children, rtl}) => (
-    <div className={rtl ? 'font-arabic' : 'font-sans'}>{children}</div>
+    <div className={`space-y-4 ${rtl ? 'font-arabic' : 'font-sans'}`}>{children}</div>
 );
 
 const InfoCard: React.FC<{title: string, children: React.ReactNode, rtl?: boolean}> = ({title, children, rtl}) => (
     <div className={`p-4 rounded-lg border border-slate-200 bg-white shadow-sm mb-4 ${rtl ? 'text-right' : 'text-left'}`}>
         <h4 className={`font-bold text-slate-700 mb-2 ${rtl ? 'font-arabic' : ''}`}>{title}</h4>
-        {children}
+        <div className="text-sm text-slate-600">{children}</div>
     </div>
 );
 
@@ -74,718 +74,655 @@ const SECTIONS = [
         color: "blue",
         contentEn: (
             <>
-                <h3 className="font-bold text-lg text-slate-800 mb-3">Composition & Properties</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <InfoCard title="Composition">
-                        <ul className="list-disc pl-4 space-y-1 text-sm text-slate-600">
-                            <li>Resin matrix (Bis-GMA, UDMA): 20-25%</li>
-                            <li>Filler particles (silica, quartz): 70-80%</li>
-                            <li>Coupling agent (silane): 1-2%</li>
-                        </ul>
-                    </InfoCard>
-                    <InfoCard title="Properties">
-                        <ul className="list-disc pl-4 space-y-1 text-sm text-slate-600">
-                            <li>Compressive strength: 300-400 MPa</li>
-                            <li>Polymerization shrinkage: 1.5-3%</li>
-                        </ul>
-                    </InfoCard>
-                </div>
-                
                 <HighlightBox>
-                    <strong>Best for:</strong> Anterior restorations, aesthetic zones, direct veneers.<br/>
-                    <strong>Avoid:</strong> Large posterior restorations, heavy bruxism, deep subgingival margins.
+                    <strong>Key Principle:</strong> Match composite type to specific clinical situation - using wrong type leads to 50% higher failure rate.
                 </HighlightBox>
 
-                <h3 className="font-bold text-lg text-slate-800 mb-3">Clinical Procedure</h3>
-                <ol className="list-decimal pl-5 space-y-2 text-sm text-slate-700 font-medium">
-                    <li>Shade selection (natural light, 30s).</li>
-                    <li>Isolation (Rubber dam/cotton).</li>
-                    <li>Prep with beveled margins (1-2mm).</li>
-                    <li>Etch 37% Phos. Acid (15-30s enamel).</li>
-                    <li>Bond (2 coats, air thin).</li>
-                    <li>Incremental placement (2mm max).</li>
-                    <li>Cure 20-40s. Finish & Polish.</li>
-                </ol>
-            </>
-        ),
-        contentAr: (
-            <>
-                <h3 className="font-bold text-lg text-slate-800 mb-3 font-arabic">التركيب والخصائص</h3>
+                <h3 className="font-bold text-lg text-slate-800">Composite Types & Applications</h3>
                 <div className="grid md:grid-cols-2 gap-4">
-                    <InfoCard title="التركيب الكيميائي" rtl>
-                        <ul className="list-disc pr-4 space-y-1 text-sm text-slate-600 font-arabic">
-                            <li>مصفوفة راتنجية: 20-25%</li>
-                            <li>حشوات دقيقة: 70-80%</li>
-                            <li>عامل ربط سيلان: 1-2%</li>
+                    <InfoCard title="Microhybrid Composites">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Best for:</strong> Universal posterior restorations.</li>
+                            <li><strong>Advantage:</strong> Excellent polish (85% retention at 3yrs), good strength.</li>
+                            <li><strong>Shades:</strong> A2, A3, A3.5 cover 80% of cases.</li>
                         </ul>
                     </InfoCard>
-                    <InfoCard title="الخصائص الميكانيكية" rtl>
-                        <ul className="list-disc pr-4 space-y-1 text-sm text-slate-600 font-arabic">
-                            <li>قوة ضغطية: 300-400 ميجا باسكال</li>
-                            <li>انكماش البلمرة: 1.5-3%</li>
+                    <InfoCard title="Nanofilled Composites">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Best for:</strong> High aesthetic zones, veneers.</li>
+                            <li><strong>Advantage:</strong> Superior polish, high gloss.</li>
+                            <li><strong>Translucency:</strong> 15-18% (excellent for incisal).</li>
                         </ul>
                     </InfoCard>
-                </div>
-
-                <HighlightBox rtl>
-                    <strong>أفضل استخدام:</strong> ترميمات أمامية، مناطق جمالية.<br/>
-                    <strong>تجنب:</strong> ترميمات خلفية كبيرة، صرير أسنان.
-                </HighlightBox>
-
-                <h3 className="font-bold text-lg text-slate-800 mb-3 font-arabic">خطوات الإجراء</h3>
-                <ol className="list-decimal pr-5 space-y-2 text-sm text-slate-700 font-medium font-arabic">
-                    <li>اختيار اللون (ضوء طبيعي).</li>
-                    <li>العزل (سدادة مطاطية).</li>
-                    <li>تحضير حواف مائلة (1-2 مم).</li>
-                    <li>تخريش 37% (15-30 ثانية).</li>
-                    <li>مادة رابطة (طبقتان).</li>
-                    <li>وضع طبقي (2 مم حد أقصى).</li>
-                    <li>تصلب ضوئي وتشطيب.</li>
-                </ol>
-            </>
-        )
-    },
-    {
-        titleEn: "2. Dental Amalgam",
-        titleAr: "2. الملغم (الزئبق الفضي)",
-        color: "slate",
-        contentEn: (
-            <>
-                <h3 className="font-bold text-lg text-slate-800 mb-3">Composition & Properties</h3>
-                <div className="overflow-x-auto border rounded-lg mb-4">
-                    <table className="w-full text-sm text-left">
-                        <thead className="bg-slate-100 font-bold text-slate-800">
-                            <tr>
-                                <th className="p-2 border-b">Component</th>
-                                <th className="p-2 border-b">%</th>
-                                <th className="p-2 border-b">Role</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y text-slate-700">
-                            <tr><td className="p-2">Silver (Ag)</td><td className="p-2">40-60%</td><td className="p-2">Strength</td></tr>
-                            <tr><td className="p-2">Tin (Sn)</td><td className="p-2">27-30%</td><td className="p-2">Workability</td></tr>
-                            <tr><td className="p-2">Copper (Cu)</td><td className="p-2">13-30%</td><td className="p-2">Strength</td></tr>
-                            <tr><td className="p-2">Mercury</td><td className="p-2">43-50%</td><td className="p-2">Binding</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-4 mb-4">
-                    <InfoCard title="Indications">
-                        <ul className="list-disc pl-4 space-y-1 text-sm text-slate-600">
-                            <li>Large Class I & II posterior.</li>
-                            <li>Foundation for crowns.</li>
-                            <li>High stress areas (Bruxism).</li>
+                    <InfoCard title="Bulk-Fill Composites">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Best for:</strong> Deep Class I, II (Time critical).</li>
+                            <li><strong>Limit:</strong> Up to 4mm single layer.</li>
+                            <li><strong>Caution:</strong> Check light output {'>'}1000 mW/cm².</li>
                         </ul>
                     </InfoCard>
-                    <InfoCard title="Safety Protocol">
-                         <ul className="list-disc pl-4 space-y-1 text-sm text-slate-600">
-                            <li>Use pre-capsulated alloys.</li>
-                            <li>High-volume evacuation.</li>
-                            <li>Store scrap in sealed container.</li>
+                    <InfoCard title="Flowable Composites">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Best for:</strong> Liners, small cavities, Class V.</li>
+                            <li><strong>Use:</strong> 0.5mm liner first, then packable.</li>
+                            <li><strong>Avoid:</strong> Stress-bearing areas (low strength).</li>
                         </ul>
                     </InfoCard>
                 </div>
-            </>
-        ),
-        contentAr: (
-            <>
-                <h3 className="font-bold text-lg text-slate-800 mb-3 font-arabic">التركيب والخصائص</h3>
-                <div className="overflow-x-auto border rounded-lg mb-4">
-                    <table className="w-full text-sm text-right font-arabic">
-                        <thead className="bg-slate-100 font-bold text-slate-800">
-                            <tr>
-                                <th className="p-2 border-b">المكون</th>
-                                <th className="p-2 border-b">%</th>
-                                <th className="p-2 border-b">الوظيفة</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y text-slate-700">
-                            <tr><td className="p-2">فضة</td><td className="p-2">40-60%</td><td className="p-2">القوة</td></tr>
-                            <tr><td className="p-2">قصدير</td><td className="p-2">27-30%</td><td className="p-2">التشكيل</td></tr>
-                            <tr><td className="p-2">نحاس</td><td className="p-2">13-30%</td><td className="p-2">القوة</td></tr>
-                            <tr><td className="p-2">زئبق</td><td className="p-2">43-50%</td><td className="p-2">الربط</td></tr>
-                        </tbody>
-                    </table>
-                </div>
 
-                 <div className="grid md:grid-cols-2 gap-4 mb-4">
-                    <InfoCard title="دواعي الاستخدام" rtl>
-                        <ul className="list-disc pr-4 space-y-1 text-sm text-slate-600 font-arabic">
-                            <li>ترميمات خلفية كبيرة (فئة 1 و 2).</li>
-                            <li>تحت التيجان.</li>
-                            <li>مناطق الضغط العالي.</li>
-                        </ul>
-                    </InfoCard>
-                    <InfoCard title="بروتوكول السلامة" rtl>
-                         <ul className="list-disc pr-4 space-y-1 text-sm text-slate-600 font-arabic">
-                            <li>كبسولات مغلقة مسبقاً.</li>
-                            <li>شفط عالي الحجم.</li>
-                            <li>تخزين البقايا في حاويات محكمة.</li>
-                        </ul>
-                    </InfoCard>
-                </div>
-            </>
-        )
-    },
-    {
-        titleEn: "3. Ceramic & Porcelain Materials",
-        titleAr: "3. مواد السيراميك والبورسلين",
-        color: "cyan",
-        contentEn: (
-            <>
-                <div className="grid md:grid-cols-2 gap-4 mb-4">
-                    <InfoCard title="Lithium Disilicate (e.max)">
-                        <p className="text-sm text-slate-600 mb-2">High aesthetics + strength (360-400 MPa).</p>
-                        <p className="text-xs text-slate-500">Best for: Veneers, Anterior Crowns.</p>
-                    </InfoCard>
-                    <InfoCard title="Zirconia (Y-TZP)">
-                        <p className="text-sm text-slate-600 mb-2">Exceptional strength (900-1200 MPa). Biocompatible.</p>
-                        <p className="text-xs text-slate-500">Best for: Posterior Crowns, Bridges, Bruxers.</p>
-                    </InfoCard>
-                </div>
-                
-                <h3 className="font-bold text-lg text-slate-800 mb-2">Cementation Protocol</h3>
-                <div className="bg-cyan-50 p-4 rounded-lg border border-cyan-100">
-                    <ol className="list-decimal pl-5 space-y-2 text-sm text-slate-700">
-                         <li><strong>Clean:</strong> Ultrasonic or steam clean restoration.</li>
-                         <li><strong>Pre-treat:</strong>
-                            <ul className="list-disc pl-4 mt-1 text-xs">
-                                <li>Glass Ceramic: Etch (HF) + Silane.</li>
-                                <li>Zirconia: Sandblast + MDP Primer.</li>
-                            </ul>
-                         </li>
-                         <li><strong>Cement:</strong> Resin cement (Dual cure for crowns).</li>
-                         <li><strong>Cure:</strong> Light cure margins 40s.</li>
-                    </ol>
-                </div>
-            </>
-        ),
-        contentAr: (
-            <>
-                <div className="grid md:grid-cols-2 gap-4 mb-4">
-                    <InfoCard title="ديسيليكات الليثيوم (e.max)" rtl>
-                        <p className="text-sm text-slate-600 mb-2 font-arabic">جمالية عالية + قوة (360-400 ميجا باسكال).</p>
-                        <p className="text-xs text-slate-500 font-arabic">أفضل لـ: القشور، التيجان الأمامية.</p>
-                    </InfoCard>
-                    <InfoCard title="الزركونيا (Y-TZP)" rtl>
-                        <p className="text-sm text-slate-600 mb-2 font-arabic">قوة استثنائية (900-1200 ميجا باسكال). توافق حيوي.</p>
-                        <p className="text-xs text-slate-500 font-arabic">أفضل لـ: التيجان الخلفية، الجسور.</p>
-                    </InfoCard>
-                </div>
+                <h3 className="font-bold text-lg text-slate-800 mt-4">Layering Strategies</h3>
+                <ul className="list-disc pl-5 space-y-1 text-sm text-slate-700">
+                    <li><strong>Deep Posterior ({'>'}5mm):</strong> 0.5mm flowable liner → 2mm dentin shade → 2mm enamel shade → 0.5mm final enamel.</li>
+                    <li><strong>Anterior Aesthetic:</strong> Dentin shade (body) → Enamel shade (overlay) → Translucent (incisal).</li>
+                    <li><strong>Class V:</strong> Flowable only (adapts to concave). No etching if on cementum (use self-etch).</li>
+                </ul>
 
-                <h3 className="font-bold text-lg text-slate-800 mb-2 font-arabic">بروتوكول التسريب</h3>
-                <div className="bg-cyan-50 p-4 rounded-lg border border-cyan-100">
-                    <ol className="list-decimal pr-5 space-y-2 text-sm text-slate-700 font-arabic">
-                         <li><strong>تنظيف:</strong> موجات صوتية أو بخار.</li>
-                         <li><strong>المعالجة المسبقة:</strong>
-                            <ul className="list-disc pr-4 mt-1 text-xs font-arabic">
-                                <li>سيراميك زجاجي: حفر (HF) + سيلان.</li>
-                                <li>زركونيا: ترميل + برايمر MDP.</li>
-                            </ul>
-                         </li>
-                         <li><strong>السمنت:</strong> سمنت راتنجي (ثنائي التصلب).</li>
-                         <li><strong>التصلب:</strong> ضوئي 40 ثانية.</li>
-                    </ol>
-                </div>
-            </>
-        )
-    },
-    {
-        titleEn: "4. Root Canal Treatment Protocol",
-        titleAr: "4. بروتوكول علاج العصب",
-        color: "indigo",
-        contentEn: (
-            <>
-                <InfoCard title="Diagnosis & Planning">
-                    <ul className="list-disc pl-4 space-y-1 text-sm text-slate-600">
-                        <li>2 PA radiographs (different angles).</li>
-                        <li>Cold test/EPT & Percussion.</li>
-                        <li>CBCT for complex anatomy.</li>
-                    </ul>
-                </InfoCard>
-
-                <h3 className="font-bold text-lg text-slate-800 mb-2">Procedure Steps</h3>
-                <ol className="list-decimal pl-5 space-y-2 text-sm text-slate-700 font-medium">
-                    <li>Anesthesia & Rubber Dam (Critical).</li>
-                    <li>Access (Remove all caries).</li>
-                    <li>Working length (Apex locator + X-ray).</li>
-                    <li>Preparation (NiTi Rotary).</li>
-                    <li>Irrigation: NaOCl 2.5% + EDTA 17%.</li>
-                    <li>Obturation (Gutta-percha + Sealer).</li>
-                    <li><strong>Coronal Seal:</strong> Immediate restoration.</li>
-                </ol>
-
-                <HighlightBox>
-                    <strong>Success Rate:</strong> 85-95% (Primary).<br/>
-                    Critical factor: Coronal seal within 2 weeks.
-                </HighlightBox>
-            </>
-        ),
-        contentAr: (
-            <>
-                <InfoCard title="التشخيص والتخطيط" rtl>
-                    <ul className="list-disc pr-4 space-y-1 text-sm text-slate-600 font-arabic">
-                        <li>صورتين أشعة PA بزوايا مختلفة.</li>
-                        <li>اختبار البرودة/القرع.</li>
-                        <li>أشعة مقطعية CBCT للحالات المعقدة.</li>
-                    </ul>
-                </InfoCard>
-
-                <h3 className="font-bold text-lg text-slate-800 mb-2 font-arabic">خطوات الإجراء</h3>
-                <ol className="list-decimal pr-5 space-y-2 text-sm text-slate-700 font-medium font-arabic">
-                    <li>التخدير والعزل المطاطي (ضروري).</li>
-                    <li>فتح الدخول (إزالة التسوس).</li>
-                    <li>الطول العامل (محدد الذروة + أشعة).</li>
-                    <li>التحضير (مبارد دوارة).</li>
-                    <li>الغسيل: هيبوكلوريت 2.5% + EDTA.</li>
-                    <li>الحشو (جوتا بيرشا + سيلر).</li>
-                    <li><strong>الختم التاجي:</strong> ترميم فوري.</li>
-                </ol>
-
-                <HighlightBox rtl>
-                    <strong>معدل النجاح:</strong> 85-95% (أولي).<br/>
-                    العامل الحاسم: جودة الختم التاجي خلال أسبوعين.
-                </HighlightBox>
-            </>
-        )
-    },
-    {
-        titleEn: "5. Crown Preparation",
-        titleAr: "5. تحضير التيجان",
-        color: "purple",
-        contentEn: (
-            <>
-                <div className="grid grid-cols-2 gap-3 mb-4 text-center">
-                    <div className="bg-purple-50 p-3 rounded border border-purple-100">
-                        <div className="text-xs uppercase text-purple-600 font-bold">Occlusal</div>
-                        <div className="font-bold text-purple-900">1.5 - 2.0 mm</div>
-                    </div>
-                    <div className="bg-purple-50 p-3 rounded border border-purple-100">
-                        <div className="text-xs uppercase text-purple-600 font-bold">Axial</div>
-                        <div className="font-bold text-purple-900">1.0 - 1.5 mm</div>
-                    </div>
-                    <div className="bg-purple-50 p-3 rounded border border-purple-100">
-                        <div className="text-xs uppercase text-purple-600 font-bold">Margin</div>
-                        <div className="font-bold text-purple-900">0.5 mm</div>
-                    </div>
-                    <div className="bg-purple-50 p-3 rounded border border-purple-100">
-                        <div className="text-xs uppercase text-purple-600 font-bold">Placement</div>
-                        <div className="font-bold text-purple-900">Supragingival</div>
-                    </div>
-                </div>
-
-                <div className="bg-white border rounded-lg p-4">
-                    <h4 className="font-bold text-slate-800 mb-2">Procedural Steps</h4>
+                <h3 className="font-bold text-lg text-slate-800 mt-4">Practical Chairside Techniques</h3>
+                <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <h4 className="font-bold text-sm mb-2">Rubber Dam Mastery (2-Min Technique)</h4>
                     <ol className="list-decimal pl-5 space-y-1 text-sm text-slate-600">
-                        <li>Guiding grooves.</li>
-                        <li>Occlusal reduction first.</li>
-                        <li>Axial reduction.</li>
-                        <li>Margin refinement.</li>
-                        <li>Retraction cord (00/000).</li>
-                        <li>Impression (Scan/PVS).</li>
+                        <li>Pre-punch holes (#19-32 typically).</li>
+                        <li>Clamp: Wingless (Posterior), Winged (Anterior).</li>
+                        <li>Technique: Clamp on tooth first → Stretch dam over → Frame.</li>
+                        <li><strong>Invert dam</strong> into sulcus with air + plastic instrument.</li>
                     </ol>
+                </div>
+                <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 mt-2">
+                    <h4 className="font-bold text-sm mb-2">Local Anesthesia Quick Wins</h4>
+                    <ul className="list-disc pl-5 space-y-1 text-sm text-slate-600">
+                        <li><strong>Buffering:</strong> Add sodium bicarb 8.4% (1:10) for 2x faster onset.</li>
+                        <li><strong>Warm:</strong> To body temp reduces pain 30%.</li>
+                        <li><strong>Articaine:</strong> 4x more effective in posterior maxilla infiltration.</li>
+                    </ul>
                 </div>
             </>
         ),
         contentAr: (
             <>
-                <div className="grid grid-cols-2 gap-3 mb-4 text-center font-arabic">
-                    <div className="bg-purple-50 p-3 rounded border border-purple-100">
-                        <div className="text-xs uppercase text-purple-600 font-bold">إطباقي</div>
-                        <div className="font-bold text-purple-900">1.5 - 2.0 مم</div>
-                    </div>
-                    <div className="bg-purple-50 p-3 rounded border border-purple-100">
-                        <div className="text-xs uppercase text-purple-600 font-bold">محوري</div>
-                        <div className="font-bold text-purple-900">1.0 - 1.5 مم</div>
-                    </div>
-                    <div className="bg-purple-50 p-3 rounded border border-purple-100">
-                        <div className="text-xs uppercase text-purple-600 font-bold">الحافة</div>
-                        <div className="font-bold text-purple-900">0.5 مم</div>
-                    </div>
-                    <div className="bg-purple-50 p-3 rounded border border-purple-100">
-                        <div className="text-xs uppercase text-purple-600 font-bold">الموضع</div>
-                        <div className="font-bold text-purple-900">فوق اللثة</div>
-                    </div>
-                </div>
-
-                <div className="bg-white border rounded-lg p-4">
-                    <h4 className="font-bold text-slate-800 mb-2 font-arabic">خطوات الإجراء</h4>
-                    <ol className="list-decimal pr-5 space-y-1 text-sm text-slate-600 font-arabic">
-                        <li>أخاديد توجيهية.</li>
-                        <li>تخفيض إطباقي أولاً.</li>
-                        <li>تخفيض محوري.</li>
-                        <li>تنقيح الحافة.</li>
-                        <li>خيط التبعيد (00/000).</li>
-                        <li>الانطباع (مسح/PVS).</li>
-                    </ol>
-                </div>
-            </>
-        )
-    },
-    {
-        titleEn: "6. Infection Control & Sterilization",
-        titleAr: "6. التحكم في العدوى والتعقيم",
-        color: "green",
-        contentEn: (
-            <>
-                <div className="grid md:grid-cols-2 gap-4 mb-4">
-                    <InfoCard title="Pre-Cleaning">
-                        <ul className="list-disc pl-4 space-y-1 text-sm text-slate-600">
-                            <li>Within 30 mins of use.</li>
-                            <li>Ultrasonic: 6-10 mins.</li>
-                            <li>Rinse & Dry thoroughly.</li>
-                        </ul>
-                    </InfoCard>
-                    <InfoCard title="Packaging">
-                         <ul className="list-disc pl-4 space-y-1 text-sm text-slate-600">
-                            <li>Internal/External indicators.</li>
-                            <li>Label date & contents.</li>
-                            <li>Shelf life: 6 months (wrapped).</li>
-                        </ul>
-                    </InfoCard>
-                </div>
-
-                <div className="overflow-x-auto border rounded-lg mb-4">
-                     <table className="w-full text-sm text-left">
-                        <thead className="bg-slate-100 font-bold text-slate-800">
-                            <tr>
-                                <th className="p-2 border-b">Method</th>
-                                <th className="p-2 border-b">Temp</th>
-                                <th className="p-2 border-b">Time</th>
-                                <th className="p-2 border-b">Bar</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y text-slate-700">
-                            <tr><td className="p-2">Autoclave (B)</td><td className="p-2">134°C</td><td className="p-2">3.5-18m</td><td className="p-2">2.1</td></tr>
-                            <tr><td className="p-2">Dry Heat</td><td className="p-2">160°C</td><td className="p-2">120m</td><td className="p-2">-</td></tr>
-                        </tbody>
-                     </table>
-                </div>
-
-                <HighlightBox>
-                    <strong>QC:</strong> Weekly Spore tests. Daily mechanical check (Pressure/Temp).
-                </HighlightBox>
-            </>
-        ),
-        contentAr: (
-            <>
-                 <div className="grid md:grid-cols-2 gap-4 mb-4">
-                    <InfoCard title="التنظيف المبدئي" rtl>
-                        <ul className="list-disc pr-4 space-y-1 text-sm text-slate-600 font-arabic">
-                            <li>خلال 30 دقيقة.</li>
-                            <li>موجات صوتية: 6-10 دقائق.</li>
-                            <li>شطف وتجفيف جيد.</li>
-                        </ul>
-                    </InfoCard>
-                    <InfoCard title="التغليف" rtl>
-                         <ul className="list-disc pr-4 space-y-1 text-sm text-slate-600 font-arabic">
-                            <li>مؤشرات داخلية/خارجية.</li>
-                            <li>كتابة التاريخ والمحتوى.</li>
-                            <li>الصلاحية: 6 أشهر (مغلف).</li>
-                        </ul>
-                    </InfoCard>
-                </div>
-
-                <div className="overflow-x-auto border rounded-lg mb-4">
-                     <table className="w-full text-sm text-right font-arabic">
-                        <thead className="bg-slate-100 font-bold text-slate-800">
-                            <tr>
-                                <th className="p-2 border-b">الطريقة</th>
-                                <th className="p-2 border-b">حرارة</th>
-                                <th className="p-2 border-b">وقت</th>
-                                <th className="p-2 border-b">ضغط</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y text-slate-700">
-                            <tr><td className="p-2">أوتوكلاف (B)</td><td className="p-2">134°</td><td className="p-2">3.5-18د</td><td className="p-2">2.1</td></tr>
-                            <tr><td className="p-2">حرارة جافة</td><td className="p-2">160°</td><td className="p-2">120د</td><td className="p-2">-</td></tr>
-                        </tbody>
-                     </table>
-                </div>
-
                 <HighlightBox rtl>
-                    <strong>الجودة:</strong> اختبار أبواغ أسبوعي. فحص ميكانيكي يومي.
+                    <strong>المبدأ الأساسي:</strong> مطابقة نوع الكومبوزيت للحالة السريرية - النوع الخطأ يزيد الفشل بنسبة 50%.
                 </HighlightBox>
-            </>
-        )
-    },
-    {
-        titleEn: "7. Biocompatibility & Material Selection",
-        titleAr: "7. اختيار المواد والتوافق الحيوي",
-        color: "amber",
-        contentEn: (
-            <>
-                <div className="overflow-x-auto border rounded-lg mb-4">
-                    <table className="w-full text-sm text-left">
-                        <thead className="bg-amber-100 font-bold text-amber-900">
-                            <tr>
-                                <th className="p-2 border-b border-amber-100">Location</th>
-                                <th className="p-2 border-b border-amber-100">Primary Choice</th>
-                                <th className="p-2 border-b border-amber-100">Key Consideration</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100 text-slate-700">
-                            <tr><td className="p-2 font-medium">Anterior</td><td className="p-2">Microfilled Composite</td><td className="p-2">Aesthetics</td></tr>
-                            <tr><td className="p-2 font-medium">Posterior</td><td className="p-2">Packable Composite</td><td className="p-2">Stress</td></tr>
-                            <tr><td className="p-2 font-medium">Full Ant. Crown</td><td className="p-2">Lithium Disilicate</td><td className="p-2">Translucency</td></tr>
-                            <tr><td className="p-2 font-medium">Full Post. Crown</td><td className="p-2">Zirconia</td><td className="p-2">Wear</td></tr>
-                        </tbody>
-                    </table>
+
+                <h3 className="font-bold text-lg text-slate-800 font-arabic">أنواع الكومبوزيت والتطبيقات</h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <InfoCard title="المايكروهايبر د (Microhybrid)" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>أفضل لـ:</strong> الترميمات الخلفية العامة.</li>
+                            <li><strong>المميزات:</strong> تلميع وقوة ممتازة.</li>
+                            <li><strong>الظلال:</strong> A2, A3, A3.5 تغطي 80%.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="النانوفيل د (Nanofilled)" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>أفضل لـ:</strong> المناطق الجمالية، القشور.</li>
+                            <li><strong>المميزات:</strong> لمعان فائق وشفافية عالية.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="الحشو المجمع (Bulk-Fill)" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>أفضل لـ:</strong> الفئة I و II العميقة (عند الاستعجال).</li>
+                            <li><strong>الحد:</strong> طبقة واحدة حتى 4 مم.</li>
+                            <li><strong>تنبيه:</strong> تأكد من قوة الضوء {'>'}1000.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="السائل (Flowable)" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>أفضل لـ:</strong> البطانات، الفئة V.</li>
+                            <li><strong>الاستخدام:</strong> طبقة 0.5 مم أولاً.</li>
+                            <li><strong>تجنب:</strong> مناطق الضغط (قوة ضعيفة).</li>
+                        </ul>
+                    </InfoCard>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                    <InfoCard title="High Caries Risk">
-                        <ul className="list-disc pl-4 space-y-1 text-sm text-slate-600">
-                            <li>Glass ionomer (Fluoride).</li>
-                            <li>RMGI cement.</li>
-                            <li>Sealants.</li>
-                        </ul>
-                    </InfoCard>
-                    <InfoCard title="Metal Allergy">
-                        <ul className="list-disc pl-4 space-y-1 text-sm text-slate-600">
-                            <li>Titanium implants only.</li>
-                            <li>All-ceramic restorations.</li>
-                            <li>Pure Gold.</li>
-                        </ul>
-                    </InfoCard>
-                </div>
-            </>
-        ),
-        contentAr: (
-            <>
-                <div className="overflow-x-auto border rounded-lg mb-4">
-                    <table className="w-full text-sm text-right font-arabic">
-                        <thead className="bg-amber-100 font-bold text-amber-900">
-                            <tr>
-                                <th className="p-2 border-b border-amber-100">الموقع</th>
-                                <th className="p-2 border-b border-amber-100">الاختيار الأول</th>
-                                <th className="p-2 border-b border-amber-100">الاعتبار الرئيسي</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100 text-slate-700">
-                            <tr><td className="p-2 font-medium">أمامي</td><td className="p-2">كومبوزيت ميكروفي</td><td className="p-2">الجمالية</td></tr>
-                            <tr><td className="p-2 font-medium">خلفي</td><td className="p-2">كومبوزيت قابل للحشو</td><td className="p-2">تحمل الضغط</td></tr>
-                            <tr><td className="p-2 font-medium">تاج أمامي</td><td className="p-2">ديسيليكات الليثيوم</td><td className="p-2">الشفافية</td></tr>
-                            <tr><td className="p-2 font-medium">تاج خلفي</td><td className="p-2">زركونيا</td><td className="p-2">مقاومة البلى</td></tr>
-                        </tbody>
-                    </table>
-                </div>
+                <h3 className="font-bold text-lg text-slate-800 mt-4 font-arabic">استراتيجيات الطبقات</h3>
+                <ul className="list-disc pr-5 space-y-1 text-sm text-slate-700 font-arabic">
+                    <li><strong>خلفي عميق ({'>'}5مم):</strong> 0.5 مم سائل (بطانة) ← 2 مم عاج ← 2 مم مينا ← 0.5 مم نهائي.</li>
+                    <li><strong>أمامي جمالي:</strong> ظل عاجي (جسم) ← ظل مينائي (غطاء) ← شفاف (قاطع).</li>
+                    <li><strong>فئة V:</strong> سائل فقط. لا تحفر السمنتوم (استخدم لاصق ذاتي).</li>
+                </ul>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                    <InfoCard title="مخاطر تسوس عالية" rtl>
-                        <ul className="list-disc pr-4 space-y-1 text-sm text-slate-600 font-arabic">
-                            <li>زجاج أيوني (فلورايد).</li>
-                            <li>سمنت RMGI.</li>
-                            <li>سد الشقوق.</li>
-                        </ul>
-                    </InfoCard>
-                    <InfoCard title="حساسية المعادن" rtl>
-                        <ul className="list-disc pr-4 space-y-1 text-sm text-slate-600 font-arabic">
-                            <li>زرعات تيتانيوم فقط.</li>
-                            <li>سيراميك كامل.</li>
-                            <li>ذهب نقي.</li>
-                        </ul>
-                    </InfoCard>
+                <h3 className="font-bold text-lg text-slate-800 mt-4 font-arabic">تقنيات عملية</h3>
+                <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <h4 className="font-bold text-sm mb-2 font-arabic">إتقان السدادة المطاطية (دقيقتين)</h4>
+                    <ol className="list-decimal pr-5 space-y-1 text-sm text-slate-600 font-arabic">
+                        <li>ثقب مسبق للأسنان.</li>
+                        <li>المشبك: بدون أجنحة (خلفي)، بأجنحة (أمامي).</li>
+                        <li>التقنية: المشبك على السن ← شد الغشاء ← الإطار.</li>
+                        <li><strong>اقلب الغشاء</strong> في اللثة بالهواء وأداة.</li>
+                    </ol>
+                </div>
+                <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 mt-2">
+                    <h4 className="font-bold text-sm mb-2 font-arabic">أسرار التخدير الموضعي</h4>
+                    <ul className="list-disc pr-5 space-y-1 text-sm text-slate-600 font-arabic">
+                        <li><strong>تخفيف (Buffering):</strong> بيكربونات صوديوم (1:10) لبدء أسرع.</li>
+                        <li><strong>تدفئة:</strong> لحرارة الجسم تقلل الألم 30%.</li>
+                        <li><strong>أرتيكايين:</strong> 4 مرات أقوى في الفك العلوي الخلفي.</li>
+                    </ul>
                 </div>
             </>
         )
     },
     {
-        titleEn: "8. Common Clinical Errors & Critical Guidelines",
-        titleAr: "8. الأخطاء السريرية الشائعة والإرشادات الحرجة",
+        titleEn: "2. Safety Precautions",
+        titleAr: "2. الاحتياطات الأمنية",
         color: "red",
         contentEn: (
             <>
-                <div className="space-y-6">
-                    {/* Diagnostic */}
-                    <div>
-                        <h3 className="font-bold text-lg text-slate-800 mb-2 flex items-center gap-2">
-                            <span className="bg-red-100 p-1 rounded text-red-600">🔍</span> Diagnostic Protocols
-                        </h3>
-                        <InfoCard title="Requirements & Red Flags">
-                            <ul className="list-disc pl-4 space-y-1 text-sm text-slate-600">
-                                <li><strong>Bitewings:</strong> Every 12-24 mos for caries.</li>
-                                <li><strong>Periapical:</strong> 2 angles for all Endodontic/Restorative.</li>
-                                <li><strong>Perio Probing:</strong> 6 sites per tooth mandatory.</li>
-                                <li><strong>Red Flag:</strong> Suspicious lesions → Oral Pathologist immediately.</li>
-                            </ul>
-                        </InfoCard>
-                    </div>
-
-                    {/* Composite */}
-                    <div>
-                        <h3 className="font-bold text-lg text-slate-800 mb-2 flex items-center gap-2">
-                            <span className="bg-blue-100 p-1 rounded text-blue-600">🦷</span> Composite Critical Steps
-                        </h3>
-                        <HighlightBox>
-                            <strong>Failure Alert:</strong> 20-30% fail in 5 years due to technique.
-                            <br/><strong>Key:</strong> Max 2mm thickness (Never bulk fill).
-                        </HighlightBox>
-                        <ol className="list-decimal pl-5 space-y-1 text-sm text-slate-700">
-                            <li><strong>Etching:</strong> Enamel 15-30s, Dentin 10-15s MAX.</li>
-                            <li><strong>Bonding:</strong> 2 coats, air-thin 5s, cure 10s.</li>
-                            <li><strong>Curing:</strong> &gt;500 mW/cm², 20-40s/layer.</li>
-                            <li><strong>Error:</strong> Over-etching dentin causes sensitivity.</li>
-                        </ol>
-                    </div>
-
-                    {/* Endo */}
-                    <div>
-                         <h3 className="font-bold text-lg text-slate-800 mb-2 flex items-center gap-2">
-                            <span className="bg-indigo-100 p-1 rounded text-indigo-600">⚕️</span> Root Canal Protocol
-                        </h3>
-                        <InfoCard title="Success Factors">
-                            <ul className="list-disc pl-4 space-y-1 text-sm text-slate-600">
-                                <li><strong>WL:</strong> Apex locator reading minus 0.5mm.</li>
-                                <li><strong>Irrigation:</strong> NaOCl 2.5% constant + EDTA 17%.</li>
-                                <li><strong>Critical:</strong> Coronal seal within 2 weeks is more important than obturation quality.</li>
-                                <li><strong>Stop:</strong> If ledge forms, do not force. Pre-curve files.</li>
-                            </ul>
-                        </InfoCard>
-                    </div>
-
-                    {/* Crown Prep */}
-                    <div>
-                         <h3 className="font-bold text-lg text-slate-800 mb-2 flex items-center gap-2">
-                            <span className="bg-purple-100 p-1 rounded text-purple-600">👑</span> Crown Preparation
-                        </h3>
-                        <div className="grid grid-cols-2 gap-2 mb-2 text-center text-sm">
-                            <div className="bg-slate-50 p-2 rounded border">Occlusal: 1.5-2.0mm</div>
-                            <div className="bg-slate-50 p-2 rounded border">Margin: 0.8-1.2mm</div>
-                        </div>
-                        <ul className="list-disc pl-4 space-y-1 text-sm text-slate-600">
-                            <li><strong>Error:</strong> Insufficient reduction is #1 failure cause.</li>
-                            <li><strong>Must:</strong> Use putty index to verify reduction depth.</li>
-                            <li><strong>Taper:</strong> 10-12° max total taper.</li>
+                <h3 className="font-bold text-lg text-slate-800">2.1 Dentist Health</h3>
+                <div className="grid md:grid-cols-2 gap-4 mb-4">
+                    <InfoCard title="Ergonomics">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li>Patient height: 10-15cm below elbow.</li>
+                            <li>Hip angle 90°, Knee angle 110-120°.</li>
+                            <li>Loupes declination: 20-25°.</li>
+                            <li>Breaks: 2 min every 30 min.</li>
                         </ul>
-                    </div>
-
-                    {/* Sterilization */}
-                    <div>
-                         <h3 className="font-bold text-lg text-slate-800 mb-2 flex items-center gap-2">
-                            <span className="bg-green-100 p-1 rounded text-green-600">🦠</span> Sterilization Non-Negotiables
-                        </h3>
-                        <div className="bg-red-50 p-3 rounded border border-red-100 text-sm text-red-800">
-                            <strong>Weekly Spore Test</strong> is MANDATORY. Failed sterilization = Malpractice liability.
-                        </div>
-                         <ul className="list-disc pl-4 mt-2 space-y-1 text-sm text-slate-600">
-                            <li>Clean instruments within 30 mins.</li>
-                            <li>Ultrasonic 10 mins minimum.</li>
-                            <li>Autoclave 134°C for 3.5-18 mins (Class B).</li>
+                    </InfoCard>
+                    <InfoCard title="Aerosol Control">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li>N95/KN95 fit-tested.</li>
+                            <li>Face shield over loupes.</li>
+                            <li>HEPA filtration (12-15 changes/hr).</li>
+                            <li>15-min fallow time post-aerosol.</li>
                         </ul>
-                    </div>
+                    </InfoCard>
+                    <InfoCard title="Mercury Safety">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li>Urine test {'<'}5 μg/L annually.</li>
+                            <li>N95 during removal.</li>
+                            <li>Ventilation 10-15 changes/hr.</li>
+                            <li>Sulfur powder for spills.</li>
+                        </ul>
+                    </InfoCard>
+                </div>
 
-                    {/* Legal */}
-                    <div>
-                         <h3 className="font-bold text-lg text-slate-800 mb-2 flex items-center gap-2">
-                            <span className="bg-amber-100 p-1 rounded text-amber-600">📝</span> Legal & Safety
-                        </h3>
-                        <InfoCard title="Documentation & Referral">
-                             <ul className="list-disc pl-4 space-y-1 text-sm text-slate-600">
-                                <li><strong>SOAP Format:</strong> Subjective, Objective, Assessment, Plan.</li>
-                                <li><strong>Photos:</strong> Pre-op, Prep, Post-op for EVERY case.</li>
-                                <li><strong>Refer Immediately:</strong> Complex Endo, Impacted Wisdom (close to nerve), Perio Class III/IV.</li>
-                            </ul>
-                        </InfoCard>
-                    </div>
+                <h3 className="font-bold text-lg text-slate-800">2.2 Patient Safety</h3>
+                <HighlightBox>
+                    <strong>Critical Pre-Op Check:</strong> Anticoagulants (INR {'<'}3.5?), Bisphosphonates ({'>'}3yrs = ONJ risk), Radiation ({'>'}50Gy), Allergies.
+                </HighlightBox>
+                
+                <h4 className="font-bold text-sm text-slate-700 mt-2">Pre-Medication Requirements</h4>
+                <ul className="list-disc pl-5 space-y-1 text-sm text-slate-600">
+                    <li><strong>Heart Valves:</strong> Amoxicillin 2g (1hr pre-op).</li>
+                    <li><strong>Joints ({'>'}2yrs):</strong> No antibiotics usually required.</li>
+                    <li><strong>Stents:</strong> NEVER stop DAPT without cardio consult.</li>
+                </ul>
+
+                <h4 className="font-bold text-sm text-slate-700 mt-2">Safety Max Doses</h4>
+                <ul className="list-disc pl-5 space-y-1 text-sm text-slate-600">
+                    <li><strong>Lidocaine:</strong> 7mg/kg (Max 500mg).</li>
+                    <li><strong>Articaine:</strong> 7mg/kg (Max 500mg).</li>
+                    <li><strong>Children:</strong> ALWAYS calculate by weight.</li>
+                </ul>
+            </>
+        ),
+        contentAr: (
+            <>
+                <h3 className="font-bold text-lg text-slate-800 font-arabic">2.1 سلامة الطبيب</h3>
+                <div className="grid md:grid-cols-2 gap-4 mb-4">
+                    <InfoCard title="البيوميكانيكا (Ergonomics)" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li>ارتفاع المريض: 10-15 سم تحت الكوع.</li>
+                            <li>زاوية الورك 90°، الركبة 110°.</li>
+                            <li>زاوية العدسات: 20-25°.</li>
+                            <li>استراحة دقيقتين كل 30 دقيقة.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="التحكم بالرواسب" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li>كمامة N95 مجربة.</li>
+                            <li>واقي وجه فوق العدسات.</li>
+                            <li>فلتر HEPA (12-15 تغيير/ساعة).</li>
+                            <li>وقت انتظار 15 دقيقة بعد الرواسب.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="الوقاية من الزئبق" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li>اختبار بول سنوي {'<'}5.</li>
+                            <li>كمامة N95 عند الإزالة.</li>
+                            <li>تهوية 10-15 مرة/ساعة.</li>
+                            <li>كبريت للانسكابات.</li>
+                        </ul>
+                    </InfoCard>
+                </div>
+
+                <h3 className="font-bold text-lg text-slate-800 font-arabic">2.2 سلامة المريض</h3>
+                <HighlightBox rtl>
+                    <strong>فحص حرج:</strong> سيولة الدم (INR {'<'}3.5)، بايفوسفونات ({'>'}3 سنوات = خطر نخر)، إشعاع، حساسية.
+                </HighlightBox>
+
+                <h4 className="font-bold text-sm text-slate-700 mt-2 font-arabic">أدوية ما قبل العملية</h4>
+                <ul className="list-disc pr-5 space-y-1 text-sm text-slate-600 font-arabic">
+                    <li><strong>صمامات القلب:</strong> أموكسيسيلين 2 جم.</li>
+                    <li><strong>المفاصل الصناعية:</strong> لا مضاد حيوي عادةً.</li>
+                    <li><strong>الدعامات:</strong> لا توقف مسيلات الدم (DAPT) أبداً.</li>
+                </ul>
+
+                <h4 className="font-bold text-sm text-slate-700 mt-2 font-arabic">الجرعات القصوى</h4>
+                <ul className="list-disc pr-5 space-y-1 text-sm text-slate-600 font-arabic">
+                    <li><strong>ليدوكايين:</strong> 7 مجم/كجم (أقصى 500).</li>
+                    <li><strong>أرتيكايين:</strong> 7 مجم/كجم (أقصى 500).</li>
+                    <li><strong>أطفال:</strong> احسب الوزن دائماً.</li>
+                </ul>
+            </>
+        )
+    },
+    {
+        titleEn: "3. Common Errors & Prevention",
+        titleAr: "3. الأخطاء الشائعة والوقاية",
+        color: "amber",
+        contentEn: (
+            <>
+                <div className="space-y-4">
+                    <InfoCard title="3.1 Diagnostic Errors">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Missed Caries:</strong> Confusing stain w/ decay. Relying only on visual.</li>
+                            <li><strong>Prevention:</strong> Bitewings every 12-24mo. Loupes (2.5x+). Systematic exam.</li>
+                            <li><strong>Pathology:</strong> Missing early cancer. <strong>Fix:</strong> Refer suspicious lesions immediately.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="3.2 Composite Errors">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Sensitivity:</strong> Over-etching dentin ({'>'}15s).</li>
+                            <li><strong>Failure:</strong> Moisture contamination. Bulk filling ({'>'}2mm).</li>
+                            <li><strong>Fix:</strong> Etch enamel 30s/dentin 10s. Rubber dam mandatory. Incremental fill.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="3.3 Root Canal Errors">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Short/Long:</strong> Not using Apex locator.</li>
+                            <li><strong>Ledge/Perforation:</strong> Forcing files.</li>
+                            <li><strong>Fix:</strong> Crown-down technique. Never skip files. Irrigation NaOCl 2.5%.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="3.4 Crown Prep Errors">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Failure #1:</strong> Insufficient reduction ({'<'}1.5mm).</li>
+                            <li><strong>Retention:</strong> Taper {'>'}20°.</li>
+                            <li><strong>Fix:</strong> Use putty index to check depth. Target 10-12° taper.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="3.5 Extraction Errors">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Root Fracture:</strong> Excessive force/torque.</li>
+                            <li><strong>Wrong Tooth:</strong> Counting error.</li>
+                            <li><strong>Fix:</strong> Slow steady force. Count twice. Section multi-rooted teeth.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="3.6 Impression Errors">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Poor Margins:</strong> No retraction.</li>
+                            <li><strong>Tears/Bubbles:</strong> Removed too soon.</li>
+                            <li><strong>Fix:</strong> Double cord (00/000). Leave cord 5 min. Hemostasis (AlCl).</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="3.7 Sterilization Errors">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Failure:</strong> Overloading, no spore tests.</li>
+                            <li><strong>Fix:</strong> Weekly biological indicator (Geobacillus). Ultrasonic 10 min.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="3.8 Communication Errors">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Legal Risk:</strong> Poor consent/docs.</li>
+                            <li><strong>Fix:</strong> SOAP notes immediately. Visual aids for consent.</li>
+                        </ul>
+                    </InfoCard>
                 </div>
             </>
         ),
         contentAr: (
             <>
-                <div className="space-y-6">
-                     {/* Diagnostic */}
-                    <div>
-                        <h3 className="font-bold text-lg text-slate-800 mb-2 flex items-center gap-2 font-arabic">
-                            <span className="bg-red-100 p-1 rounded text-red-600">🔍</span> بروتوكولات التشخيص
-                        </h3>
-                        <InfoCard title="المتطلبات وعلامات الخطر" rtl>
-                            <ul className="list-disc pr-4 space-y-1 text-sm text-slate-600 font-arabic">
-                                <li><strong>أشعة Bitewing:</strong> كل 12-24 شهر للتسوس.</li>
-                                <li><strong>أشعة ذروية (PA):</strong> زاويتان لكل حالات العصب والحشو.</li>
-                                <li><strong>فحص اللثة:</strong> تسجيل 6 نقاط لكل سن إلزامي.</li>
-                                <li><strong>خطر:</strong> آفات مشبوهة ← إحالة لأخصائي أمراض فم فوراً.</li>
-                            </ul>
-                        </InfoCard>
-                    </div>
-
-                    {/* Composite */}
-                    <div>
-                        <h3 className="font-bold text-lg text-slate-800 mb-2 flex items-center gap-2 font-arabic">
-                            <span className="bg-blue-100 p-1 rounded text-blue-600">🦷</span> خطوات الكومبوزيت الحرجة
-                        </h3>
-                        <HighlightBox rtl>
-                            <strong>تنبيه الفشل:</strong> 20-30% تفشل في 5 سنوات بسبب التكتيك.<br/>
-                            <strong>المفتاح:</strong> سمك الطبقة 2 مم كحد أقصى (ممنوع الحشو الكتلي).
-                        </HighlightBox>
-                        <ol className="list-decimal pr-5 space-y-1 text-sm text-slate-700 font-arabic">
-                            <li><strong>التخريش:</strong> مينا 15-30ث، عاج 10-15ث كحد أقصى.</li>
-                            <li><strong>الربط (Bonding):</strong> طبقتان، فرد بالهواء 5ث، تصليب 10ث.</li>
-                            <li><strong>التصليب الضوئي:</strong> &gt;500 mW/cm²، 20-40ث لكل طبقة.</li>
-                            <li><strong>خطأ شائع:</strong> التخريش الزائد للعاج يسبب حساسية.</li>
-                        </ol>
-                    </div>
-
-                    {/* Endo */}
-                    <div>
-                         <h3 className="font-bold text-lg text-slate-800 mb-2 flex items-center gap-2 font-arabic">
-                            <span className="bg-indigo-100 p-1 rounded text-indigo-600">⚕️</span> بروتوكول علاج العصب
-                        </h3>
-                        <InfoCard title="عوامل النجاح" rtl>
-                            <ul className="list-disc pr-4 space-y-1 text-sm text-slate-600 font-arabic">
-                                <li><strong>الطول العامل:</strong> قراءة محدد الذروة ناقص 0.5 مم.</li>
-                                <li><strong>الغسيل:</strong> هيبوكلوريت 2.5% باستمرار + EDTA 17%.</li>
-                                <li><strong>حاسم:</strong> الختم التاجي الجيد خلال أسبوعين أهم من جودة حشو العصب.</li>
-                                <li><strong>توقف:</strong> إذا تشكلت عتبة (Ledge)، لا تضغط. احني المبرد مسبقاً.</li>
-                            </ul>
-                        </InfoCard>
-                    </div>
-
-                    {/* Crown Prep */}
-                    <div>
-                         <h3 className="font-bold text-lg text-slate-800 mb-2 flex items-center gap-2 font-arabic">
-                            <span className="bg-purple-100 p-1 rounded text-purple-600">👑</span> تحضير التيجان
-                        </h3>
-                        <div className="grid grid-cols-2 gap-2 mb-2 text-center text-sm font-arabic">
-                            <div className="bg-slate-50 p-2 rounded border">إطباقي: 1.5-2.0 مم</div>
-                            <div className="bg-slate-50 p-2 rounded border">الحافة: 0.8-1.2 مم</div>
-                        </div>
-                        <ul className="list-disc pr-4 space-y-1 text-sm text-slate-600 font-arabic">
-                            <li><strong>خطأ:</strong> التحضير غير الكافي هو السبب الأول للفشل.</li>
-                            <li><strong>يجب:</strong> استخدام دليل سيليكون (Putty Index) للتحقق من العمق.</li>
-                            <li><strong>الميل (Taper):</strong> 10-12 درجة كحد أقصى إجمالي.</li>
+                <div className="space-y-4">
+                    <InfoCard title="3.1 أخطاء التشخيص" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>تسوس مفقود:</strong> خلط التصبغ بالتسوس. الاعتماد البصري فقط.</li>
+                            <li><strong>الحل:</strong> أشعة دورية. عدسات تكبير. فحص منهجي.</li>
+                            <li><strong>أمراض:</strong> إغفال سرطان الفم. <strong>الحل:</strong> إحالة فورية للآفات.</li>
                         </ul>
-                    </div>
-
-                    {/* Sterilization */}
-                    <div>
-                         <h3 className="font-bold text-lg text-slate-800 mb-2 flex items-center gap-2 font-arabic">
-                            <span className="bg-green-100 p-1 rounded text-green-600">🦠</span> التعقيم (لا جدال فيه)
-                        </h3>
-                        <div className="bg-red-50 p-3 rounded border border-red-100 text-sm text-red-800 font-arabic">
-                            <strong>اختبار الأبواغ الأسبوعي</strong> إلزامي. فشل التعقيم = مسؤولية قانونية جسيمة.
-                        </div>
-                         <ul className="list-disc pr-4 mt-2 space-y-1 text-sm text-slate-600 font-arabic">
-                            <li>تنظيف الأدوات خلال 30 دقيقة من الاستخدام.</li>
-                            <li>موجات صوتية (Ultrasonic) لمدة 10 دقائق على الأقل.</li>
-                            <li>أوتوكلاف 134 درجة لمدة 3.5-18 دقيقة (Class B).</li>
+                    </InfoCard>
+                    <InfoCard title="3.2 أخطاء الكومبوزيت" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>حساسية:</strong> حفر العاج كثيراً ({'>'}15ث).</li>
+                            <li><strong>فشل:</strong> رطوبة. حشو كتلي ({'>'}2مم).</li>
+                            <li><strong>الحل:</strong> حفر العاج 10ث فقط. سدادة مطاطية. حشو طبقي.</li>
                         </ul>
-                    </div>
+                    </InfoCard>
+                    <InfoCard title="3.3 أخطاء العصب" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>طول خطأ:</strong> عدم استخدام محدد الذروة.</li>
+                            <li><strong>ثقب/عتبة:</strong> إجبار الملفات.</li>
+                            <li><strong>الحل:</strong> تقنية تاج-لأسفل. لا تتخطى قياسات. غسيل مستمر.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="3.4 أخطاء التيجان" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>الفشل #1:</strong> تخفيض غير كافٍ ({'<'}1.5مم).</li>
+                            <li><strong>الثبات:</strong> ميلان زائد {'>'}20°.</li>
+                            <li><strong>الحل:</strong> دليل سيليكون للعمق. ميلان 10-12°.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="3.5 أخطاء القلع" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>كسر الجذر:</strong> قوة مفرطة/عزم مفاجئ.</li>
+                            <li><strong>السن الخطأ:</strong> خطأ في العد.</li>
+                            <li><strong>الحل:</strong> قوة بطيئة. عد مرتين. تقسيم الأسنان.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="3.6 أخطاء الانطباعات" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>حواف سيئة:</strong> عدم استخدام خيط نكب.</li>
+                            <li><strong>فقاعات:</strong> إزالة مبكرة.</li>
+                            <li><strong>الحل:</strong> خيط مزدوج (5 دقائق). وقف النزيف.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="3.7 أخطاء التعقيم" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>فشل:</strong> تحميل زائد، لا اختبارات.</li>
+                            <li><strong>الحل:</strong> اختبار أبواغ أسبوعي. تنظيف بالموجات 10د.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="3.8 أخطاء التواصل" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>خطر قانوني:</strong> موافقة/توثيق ضعيف.</li>
+                            <li><strong>الحل:</strong> ملاحظات SOAP فورية. شرح بصري.</li>
+                        </ul>
+                    </InfoCard>
+                </div>
+            </>
+        )
+    },
+    {
+        titleEn: "4. Core Clinical Protocols",
+        titleAr: "4. البروتوكولات السريرية الأساسية",
+        color: "indigo",
+        contentEn: (
+            <>
+                <h3 className="font-bold text-slate-800">4.1 Root Canal Treatment</h3>
+                <ol className="list-decimal pl-5 space-y-1 text-sm text-slate-700 mb-4">
+                    <li><strong>Isolation:</strong> Rubber dam mandatory.</li>
+                    <li><strong>Access:</strong> Remove all caries, unroof chamber.</li>
+                    <li><strong>WL:</strong> Apex locator + X-ray confirmation.</li>
+                    <li><strong>Prep:</strong> Crown-down, NiTi rotary.</li>
+                    <li><strong>Irrigation:</strong> 2.5% NaOCl constant + 17% EDTA.</li>
+                    <li><strong>Obturation:</strong> Gutta-percha + Sealer.</li>
+                    <li><strong>Critical:</strong> Coronal seal within 2 weeks.</li>
+                </ol>
 
-                    {/* Legal */}
-                    <div>
-                         <h3 className="font-bold text-lg text-slate-800 mb-2 flex items-center gap-2 font-arabic">
-                            <span className="bg-amber-100 p-1 rounded text-amber-600">📝</span> قانوني وسلامة
-                        </h3>
-                        <InfoCard title="التوثيق والإحالة" rtl>
-                             <ul className="list-disc pr-4 space-y-1 text-sm text-slate-600 font-arabic">
-                                <li><strong>صيغة SOAP:</strong> (شخصي، موضوعي، تقييم، خطة).</li>
-                                <li><strong>الصور:</strong> قبل، أثناء التحضير، وبعد لكل حالة.</li>
-                                <li><strong>إحالة فورية:</strong> عصب معقد، عقل مدفون (قريب للعصب)، لثة متقدمة.</li>
-                            </ul>
-                        </InfoCard>
-                    </div>
+                <h3 className="font-bold text-slate-800">4.2 Crown Preparation</h3>
+                <div className="grid grid-cols-2 gap-2 text-sm text-slate-600 mb-4">
+                    <div className="bg-indigo-50 p-2 rounded">Occlusal: 1.5-2.0mm</div>
+                    <div className="bg-indigo-50 p-2 rounded">Axial: 1.0-1.5mm</div>
+                    <div className="bg-indigo-50 p-2 rounded">Margin: 0.8-1.2mm</div>
+                    <div className="bg-indigo-50 p-2 rounded">Taper: 10-12° Total</div>
+                </div>
+
+                <h3 className="font-bold text-slate-800">4.3 Extraction Protocol</h3>
+                <ul className="list-disc pl-5 space-y-1 text-sm text-slate-700 mb-4">
+                    <li><strong>Pre-Op:</strong> PA + Bitewing. Check history (Bisphosphonates?).</li>
+                    <li><strong>Refer if:</strong> Nerve &lt;2mm, Sinus involvement, Dilacerated.</li>
+                    <li><strong>Post-Op:</strong> Verify root tip, irrigate, check sinus (Valsalva).</li>
+                </ul>
+
+                <h3 className="font-bold text-slate-800">4.4 Sterilization</h3>
+                <ul className="list-disc pl-5 space-y-1 text-sm text-slate-700">
+                    <li><strong>Ultrasonic:</strong> 10 mins minimum.</li>
+                    <li><strong>Autoclave (Class B):</strong> 134°C, 3.5-18 mins.</li>
+                    <li><strong>QA:</strong> Weekly Spore Test (Mandatory).</li>
+                </ul>
+            </>
+        ),
+        contentAr: (
+            <>
+                <h3 className="font-bold text-slate-800 font-arabic">4.1 علاج العصب</h3>
+                <ol className="list-decimal pr-5 space-y-1 text-sm text-slate-700 mb-4 font-arabic">
+                    <li><strong>العزل:</strong> سدادة مطاطية إلزامية.</li>
+                    <li><strong>الوصول:</strong> إزالة التسوس، كشف السقف.</li>
+                    <li><strong>الطول:</strong> محدد ذروة + أشعة.</li>
+                    <li><strong>التحضير:</strong> تاج-لأسفل، مبارد دوارة.</li>
+                    <li><strong>الغسيل:</strong> كلور 2.5% + EDTA.</li>
+                    <li><strong>الحشو:</strong> جوتا بيرشا + سيلر.</li>
+                    <li><strong>هام:</strong> حشوة تاجية خلال أسبوعين.</li>
+                </ol>
+
+                <h3 className="font-bold text-slate-800 font-arabic">4.2 تحضير التيجان</h3>
+                <div className="grid grid-cols-2 gap-2 text-sm text-slate-600 mb-4 font-arabic">
+                    <div className="bg-indigo-50 p-2 rounded">إطباقي: 1.5-2.0 مم</div>
+                    <div className="bg-indigo-50 p-2 rounded">محوري: 1.0-1.5 مم</div>
+                    <div className="bg-indigo-50 p-2 rounded">الحافة: 0.8-1.2 مم</div>
+                    <div className="bg-indigo-50 p-2 rounded">الميل: 10-12° إجمالي</div>
+                </div>
+
+                <h3 className="font-bold text-slate-800 font-arabic">4.3 بروتوكول القلع</h3>
+                <ul className="list-disc pr-5 space-y-1 text-sm text-slate-700 mb-4 font-arabic">
+                    <li><strong>قبل العملية:</strong> أشعة PA + بينية. تاريخ مرضي (هشاشة عظام؟).</li>
+                    <li><strong>إحالة إذا:</strong> العصب &lt;2 مم، تورط الجيب، جذور ملتوية.</li>
+                    <li><strong>بعد العملية:</strong> تحقق من طرف الجذر، اغسل، افحص الجيب.</li>
+                </ul>
+
+                <h3 className="font-bold text-slate-800 font-arabic">4.4 التعقيم</h3>
+                <ul className="list-disc pr-5 space-y-1 text-sm text-slate-700 font-arabic">
+                    <li><strong>موجات صوتية:</strong> 10 دقائق على الأقل.</li>
+                    <li><strong>أوتوكلاف (B):</strong> 134 درجة، 3.5-18 دقيقة.</li>
+                    <li><strong>الجودة:</strong> اختبار أبواغ أسبوعي (إلزامي).</li>
+                </ul>
+            </>
+        )
+    },
+    {
+        titleEn: "5. Emergency Protocols",
+        titleAr: "5. بروتوكولات الطوارئ",
+        color: "slate",
+        contentEn: (
+            <>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <InfoCard title="Syncope (Fainting)">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Signs:</strong> Pale, sweaty, slow pulse.</li>
+                            <li><strong>Action:</strong> Supine position, legs up, ammonia.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="Anaphylaxis">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Action:</strong> Epinephrine 0.3mg IM (EpiPen). Call 911. Oxygen.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="Cardiac (Angina/MI)">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Angina:</strong> Nitroglycerin 0.4mg SL.</li>
+                            <li><strong>MI:</strong> Call 911. Aspirin 325mg chewable.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="Respiratory">
+                        <ul className="list-disc pl-4 space-y-1">
+                            <li><strong>Asthma:</strong> Albuterol 2-4 puffs.</li>
+                            <li><strong>Choking:</strong> Heimlich maneuver.</li>
+                        </ul>
+                    </InfoCard>
+                </div>
+            </>
+        ),
+        contentAr: (
+            <>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <InfoCard title="الإغماء (Syncope)" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>علامات:</strong> شحوب، عرق، نبض بطيء.</li>
+                            <li><strong>إجراء:</strong> وضع الاستلقاء، رفع القدمين.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="صدمة الحساسية" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>إجراء:</strong> إبينيفرين 0.3 مجم عضل. اتصل بالطوارئ.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="القلب (ذبحة/جلطة)" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>ذبحة:</strong> نيتروجليسرين تحت اللسان.</li>
+                            <li><strong>جلطة:</strong> طوارئ. أسبرين 325 مضغ.</li>
+                        </ul>
+                    </InfoCard>
+                    <InfoCard title="التنفس" rtl>
+                        <ul className="list-disc pr-4 space-y-1 font-arabic">
+                            <li><strong>ربو:</strong> بخاخ فينتولين.</li>
+                            <li><strong>اختناق:</strong> مناورة هايمليك.</li>
+                        </ul>
+                    </InfoCard>
+                </div>
+            </>
+        )
+    },
+    {
+        titleEn: "6. Legal & Documentation",
+        titleAr: "6. القانون والتوثيق",
+        color: "green",
+        contentEn: (
+            <>
+                <HighlightBox>
+                    <strong>Rule #1:</strong> If it's not written, it didn't happen. Poor documentation is the #1 cause of malpractice loss.
+                </HighlightBox>
+                <h3 className="font-bold text-slate-800">Mandatory Records</h3>
+                <ul className="list-disc pl-5 space-y-1 text-sm text-slate-700">
+                    <li><strong>SOAP Notes:</strong> Subjective, Objective, Assessment, Plan.</li>
+                    <li><strong>Informed Consent:</strong> Risks, Benefits, Alternatives (Signed!).</li>
+                    <li><strong>Anesthesia:</strong> Type, Amount (mg), Vasoconstrictor.</li>
+                    <li><strong>Post-Op:</strong> Written instructions given.</li>
+                </ul>
+                <h3 className="font-bold text-slate-800 mt-4">Record Retention</h3>
+                <ul className="list-disc pl-5 space-y-1 text-sm text-slate-700">
+                    <li>Patient Charts/X-rays: 7-10 years.</li>
+                    <li>Spore Tests: 3 years minimum.</li>
+                </ul>
+                <div className="bg-red-50 p-2 mt-2 rounded border border-red-200 text-sm text-red-800">
+                    <strong>NEVER:</strong> Alter existing records. Add an addendum with date/time if needed.
+                </div>
+            </>
+        ),
+        contentAr: (
+            <>
+                <HighlightBox rtl>
+                    <strong>قاعدة #1:</strong> إن لم يُكتب، فهو لم يحدث. التوثيق السيء هو السبب الأول للخسارة القانونية.
+                </HighlightBox>
+                <h3 className="font-bold text-slate-800 font-arabic">سجلات إلزامية</h3>
+                <ul className="list-disc pr-5 space-y-1 text-sm text-slate-700 font-arabic">
+                    <li><strong>ملاحظات SOAP:</strong> شخصي، موضوعي، تقييم، خطة.</li>
+                    <li><strong>موافقة مستنيرة:</strong> مخاطر، فوائد، بدائل (موقعة!).</li>
+                    <li><strong>التخدير:</strong> النوع، الكمية، القابض للأوعية.</li>
+                    <li><strong>ما بعد العملية:</strong> تعليمات مكتوبة.</li>
+                </ul>
+                <h3 className="font-bold text-slate-800 mt-4 font-arabic">حفظ السجلات</h3>
+                <ul className="list-disc pr-5 space-y-1 text-sm text-slate-700 font-arabic">
+                    <li>الملفات والأشعة: 7-10 سنوات.</li>
+                    <li>اختبارات التعقيم: 3 سنوات.</li>
+                </ul>
+                <div className="bg-red-50 p-2 mt-2 rounded border border-red-200 text-sm text-red-800 font-arabic">
+                    <strong>أبداً:</strong> لا تغير السجلات القديمة. أضف ملحقاً بالتاريخ والوقت.
+                </div>
+            </>
+        )
+    },
+    {
+        titleEn: "7. Material Science Data",
+        titleAr: "7. بيانات علم المواد",
+        color: "cyan",
+        contentEn: (
+            <>
+                <div className="overflow-x-auto border rounded-lg mb-4">
+                    <table className="w-full text-sm text-left">
+                        <thead className="bg-cyan-50 font-bold text-cyan-900">
+                            <tr>
+                                <th className="p-2">Material</th>
+                                <th className="p-2">Flexural Strength</th>
+                                <th className="p-2">Use Case</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y text-slate-700">
+                            <tr><td className="p-2">Composite</td><td className="p-2">100-150 MPa</td><td className="p-2">Direct Fillings</td></tr>
+                            <tr><td className="p-2">e.max (Lithium Disilicate)</td><td className="p-2">360-400 MPa</td><td className="p-2">Veneers, Ant. Crowns</td></tr>
+                            <tr><td className="p-2">Zirconia (Y-TZP)</td><td className="p-2">900-1200 MPa</td><td className="p-2">Post. Crowns, Bridges</td></tr>
+                            <tr><td className="p-2">Amalgam</td><td className="p-2">500 MPa (Compressive)</td><td className="p-2">Large Post. Stress</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4 className="font-bold text-sm">Curing Requirements (Composite)</h4>
+                <ul className="list-disc pl-5 space-y-1 text-sm text-slate-700">
+                    <li>Intensity: {'>'}500 mW/cm².</li>
+                    <li>Wavelength: 450-490nm (Blue).</li>
+                    <li>Depth: 2mm max per increment.</li>
+                </ul>
+            </>
+        ),
+        contentAr: (
+            <>
+                <div className="overflow-x-auto border rounded-lg mb-4">
+                    <table className="w-full text-sm text-right font-arabic">
+                        <thead className="bg-cyan-50 font-bold text-cyan-900">
+                            <tr>
+                                <th className="p-2">المادة</th>
+                                <th className="p-2">قوة الانحناء</th>
+                                <th className="p-2">الاستخدام</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y text-slate-700">
+                            <tr><td className="p-2">كومبوزيت</td><td className="p-2">100-150 MPa</td><td className="p-2">حشوات مباشرة</td></tr>
+                            <tr><td className="p-2">إي ماكس</td><td className="p-2">360-400 MPa</td><td className="p-2">قشور، تيجان أمامية</td></tr>
+                            <tr><td className="p-2">زركونيا</td><td className="p-2">900-1200 MPa</td><td className="p-2">تيجان خلفية، جسور</td></tr>
+                            <tr><td className="p-2">ملغم</td><td className="p-2">500 MPa (ضغط)</td><td className="p-2">خلفي ضغط عالي</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4 className="font-bold text-sm font-arabic">متطلبات البلمرة</h4>
+                <ul className="list-disc pr-5 space-y-1 text-sm text-slate-700 font-arabic">
+                    <li>الشدة: {'>'}500.</li>
+                    <li>الطول الموجي: 450-490 نانومتر.</li>
+                    <li>العمق: 2 مم كحد أقصى.</li>
+                </ul>
+            </>
+        )
+    },
+    {
+        titleEn: "8. Final Critical Reminders",
+        titleAr: "8. تذكيرات حرجة نهائية",
+        color: "purple",
+        contentEn: (
+            <>
+                <div className="bg-purple-50 p-4 rounded-xl border border-purple-200">
+                    <h3 className="font-bold text-purple-900 mb-2">When in Doubt → REFER</h3>
+                    <ul className="list-disc pl-5 text-sm text-purple-800 space-y-1">
+                        <li>Complex Endo (Curved roots, Calcified).</li>
+                        <li>Surgical Extractions (Nerve proximity, Sinus).</li>
+                        <li>Medically compromised patients (Uncontrolled Diab/BP).</li>
+                        <li>Pediatric sedation cases.</li>
+                    </ul>
+                </div>
+                <div className="mt-4">
+                    <h3 className="font-bold text-slate-800">Success Predictors</h3>
+                    <ul className="list-disc pl-5 space-y-1 text-sm text-slate-700">
+                        <li><strong>Composite:</strong> 85% at 3yrs with proper isolation.</li>
+                        <li><strong>RCT:</strong> 95% with good coronal seal.</li>
+                        <li><strong>Crowns:</strong> 94% at 10yrs with proper prep.</li>
+                    </ul>
+                </div>
+            </>
+        ),
+        contentAr: (
+            <>
+                <div className="bg-purple-50 p-4 rounded-xl border border-purple-200">
+                    <h3 className="font-bold text-purple-900 mb-2 font-arabic">عند الشك → حوّل الحالة</h3>
+                    <ul className="list-disc pr-5 text-sm text-purple-800 space-y-1 font-arabic">
+                        <li>عصب معقد (جذور منحنية/متكلسة).</li>
+                        <li>قلع جراحي (قرب عصب/جيب).</li>
+                        <li>مرضى الخطر الطبي.</li>
+                        <li>أطفال يحتاجون تخدير عام.</li>
+                    </ul>
+                </div>
+                <div className="mt-4">
+                    <h3 className="font-bold text-slate-800 font-arabic">توقعات النجاح</h3>
+                    <ul className="list-disc pr-5 space-y-1 text-sm text-slate-700 font-arabic">
+                        <li><strong>كومبوزيت:</strong> 85% عند 3 سنوات مع عزل جيد.</li>
+                        <li><strong>عصب:</strong> 95% مع ختم تاجي جيد.</li>
+                        <li><strong>تيجان:</strong> 94% عند 10 سنوات مع تحضير سليم.</li>
+                    </ul>
                 </div>
             </>
         )
@@ -794,48 +731,88 @@ const SECTIONS = [
 
 const ClinicalGuidelines: React.FC = () => {
     const [lang, setLang] = useState<'en' | 'ar' | 'both'>('en');
+    const [searchTerm, setSearchTerm] = useState('');
 
     const shouldShowEn = lang === 'en' || lang === 'both';
     const shouldShowAr = lang === 'ar' || lang === 'both';
 
+    // Filter logic based on titles
+    const filteredSections = SECTIONS.filter(section => 
+        section.titleEn.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        section.titleAr.includes(searchTerm)
+    );
+
     return (
         <div className="space-y-6 animate-fade-in font-sans pb-12">
             {/* Header */}
-            <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl p-8 text-white text-center shadow-lg">
-                <h1 className="text-3xl font-bold mb-2">Dental Materials & Procedures</h1>
-                <p className="text-slate-300 text-lg font-arabic">دليل مواد وإجراءات طب الأسنان الشامل</p>
-                
-                <div className="mt-6 flex flex-wrap justify-center gap-2">
-                    {['en', 'ar', 'both'].map((l) => (
-                        <button 
-                            key={l}
-                            onClick={() => setLang(l as any)}
-                            className={`px-6 py-2 rounded-full text-sm font-bold transition-all border border-white/20
-                                ${lang === l ? 'bg-blue-600 text-white shadow-md border-transparent' : 'bg-white/5 text-slate-300 hover:bg-white/10'}`}
-                        >
-                            {l === 'en' ? 'English' : l === 'ar' ? 'العربية' : 'Both / كلاهما'}
+            <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl p-8 text-white text-center shadow-lg relative overflow-hidden">
+                 {/* Background pattern */}
+                 <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl"></div>
+                 
+                 <div className="relative z-10">
+                    <h1 className="text-3xl font-bold mb-2">Dental Materials & Procedures</h1>
+                    <p className="text-slate-300 text-lg font-arabic">دليل مواد وإجراءات طب الأسنان الشامل</p>
+                    
+                    <div className="mt-6 flex flex-col md:flex-row justify-center items-center gap-4">
+                        <div className="flex bg-slate-700/50 p-1 rounded-full backdrop-blur-sm">
+                             {['en', 'ar', 'both'].map((l) => (
+                                <button 
+                                    key={l}
+                                    onClick={() => setLang(l as any)}
+                                    className={`px-5 py-2 rounded-full text-sm font-bold transition-all
+                                        ${lang === l ? 'bg-blue-600 text-white shadow-lg scale-105' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                                >
+                                    {l === 'en' ? 'English' : l === 'ar' ? 'العربية' : 'Both / كلاهما'}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Search Bar - Sticky */}
+            <div className="sticky top-20 z-10 md:top-4">
+                <div className="bg-white/90 backdrop-blur-md p-2 rounded-2xl shadow-lg border border-slate-200/50 max-w-2xl mx-auto flex items-center gap-3 px-4">
+                    <Search className="text-slate-400" size={20} />
+                    <input 
+                        type="text"
+                        placeholder="Search guidelines (e.g., 'Root Canal', 'Composite')..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="flex-1 bg-transparent border-none outline-none text-slate-800 placeholder:text-slate-400 h-10"
+                    />
+                    {searchTerm && (
+                        <button onClick={() => setSearchTerm('')} className="text-xs font-bold text-slate-400 hover:text-slate-600">
+                            CLEAR
                         </button>
-                    ))}
+                    )}
                 </div>
             </div>
 
             <div className="space-y-6">
-                {SECTIONS.map((section, idx) => (
-                    <DetailSection 
-                        key={idx}
-                        titleEn={section.titleEn} 
-                        titleAr={section.titleAr}
-                        color={section.color}
-                    >
-                        <BilingualContent showEn={shouldShowEn} showAr={shouldShowAr}>
-                            <ContentSide>{section.contentEn}</ContentSide>
-                            <ContentSide rtl>{section.contentAr}</ContentSide>
-                        </BilingualContent>
-                    </DetailSection>
-                ))}
+                {filteredSections.length > 0 ? (
+                    filteredSections.map((section, idx) => (
+                        <DetailSection 
+                            key={idx}
+                            titleEn={section.titleEn} 
+                            titleAr={section.titleAr}
+                            color={section.color}
+                            isOpenDefault={searchTerm.length > 0} // Auto-expand when searching
+                        >
+                            <BilingualContent showEn={shouldShowEn} showAr={shouldShowAr}>
+                                <ContentSide>{section.contentEn}</ContentSide>
+                                <ContentSide rtl>{section.contentAr}</ContentSide>
+                            </BilingualContent>
+                        </DetailSection>
+                    ))
+                ) : (
+                    <div className="text-center py-12 text-slate-400">
+                        <p>No guidelines found matching "{searchTerm}"</p>
+                    </div>
+                )}
             </div>
 
-            <div className="mt-12 p-6 bg-slate-800 text-slate-400 text-center rounded-xl text-sm">
+            <div className="mt-12 p-6 bg-slate-800 text-slate-400 text-center rounded-xl text-sm border border-slate-700/50">
                 <p><strong>Last Updated:</strong> December 2025 | <strong>Clinical Guidelines for Dental Practice</strong></p>
                 <p className="font-arabic mt-1">يرجى اتباع تعليمات المصنع والمعايير الطبية الحالية دائماً</p>
             </div>
