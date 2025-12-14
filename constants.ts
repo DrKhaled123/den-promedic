@@ -233,10 +233,10 @@ export const DRUGS: Drug[] = [
     id: 'ab8',
     genericName: 'Ceftriaxone',
     brandNames: ['Rocephin', 'Epicephin', 'Cefotrix', 'Longacef'],
-    category: 'Antibiotic (Cephalosporin)',
-    categoryAr: 'مضاد حيوي (سيفالوسبورين)',
-    descriptionEn: '3rd Gen. Pneumonia, Meningitis, Sepsis. Single dose for Gonorrhea.',
-    descriptionAr: 'جيل ثالث. للالتهاب الرئوي، السحايا، تسمم الدم. جرعة واحدة للسيلان.',
+    category: 'Antibiotic',
+    categoryAr: 'مضاد حيوي',
+    descriptionEn: '3rd Gen Cephalosporin. Pneumonia, Meningitis, Sepsis. Single dose for Gonorrhea.',
+    descriptionAr: 'سيفالوسبورين جيل ثالث. للالتهاب الرئوي، السحايا، تسمم الدم. جرعة واحدة للسيلان.',
     doseEn: '1-2g IV/IM q24h',
     doseAr: '1-2 جرام وريد/عضل كل 24 ساعة'
   },
@@ -244,10 +244,10 @@ export const DRUGS: Drug[] = [
     id: 'ab9',
     genericName: 'Cofotaxime',
     brandNames: ['Claforan', 'Ceftax', 'Taxim'],
-    category: 'Antibiotic (Cephalosporin)',
-    categoryAr: 'مضاد حيوي (سيفالوسبورين)',
-    descriptionEn: '3rd Gen. Good CNS penetration. Short half-life (q8h).',
-    descriptionAr: 'جيل ثالث. اختراق جيد للسائل الدماغي. عمر نصفي قصير (كل 8 ساعات).',
+    category: 'Antibiotic',
+    categoryAr: 'مضاد حيوي',
+    descriptionEn: '3rd Gen Cephalosporin. Good CNS penetration. Short half-life (q8h).',
+    descriptionAr: 'سيفالوسبورين جيل ثالث. اختراق جيد للسائل الدماغي. عمر نصفي قصير (كل 8 ساعات).',
     doseEn: '1-2g IV/IM q8h',
     doseAr: '1-2 جرام وريد/عضل كل 8 ساعات'
   },
@@ -255,10 +255,10 @@ export const DRUGS: Drug[] = [
     id: 'ab10',
     genericName: 'Ampicillin/Sulbactam',
     brandNames: ['Unasyn', 'Ampictam', 'Sulbin', 'Ultracillin'],
-    category: 'Antibiotic (Penicillin)',
-    categoryAr: 'مضاد حيوي (بنسلين)',
-    descriptionEn: 'Beta-lactamase inhibitor combo. Intra-abdominal, skin infections.',
-    descriptionAr: 'مثبط بيتا لاكتاماز. لعدوى البطن والجلد والأنسجة الرخوة.',
+    category: 'Antibiotic',
+    categoryAr: 'مضاد حيوي',
+    descriptionEn: 'Penicillin + Beta-lactamase inhibitor. Intra-abdominal, skin infections.',
+    descriptionAr: 'بنسلين + مثبط بيتا لاكتاماز. لعدوى البطن والجلد والأنسجة الرخوة.',
     doseEn: '1.5-3g IV q6h',
     doseAr: '1.5-3 جرام وريد كل 6 ساعات'
   },
@@ -266,10 +266,10 @@ export const DRUGS: Drug[] = [
     id: 'ab11',
     genericName: 'Cefepime',
     brandNames: ['Maxipime', 'Cifipime'],
-    category: 'Antibiotic (Cephalosporin)',
-    categoryAr: 'مضاد حيوي (سيفالوسبورين)',
-    descriptionEn: '4th Gen. Severe hospital-acquired infections. Neurotoxicity risk in renal failure.',
-    descriptionAr: 'جيل رابع. لعدوى المستشفيات الشديدة. خطر سمية عصبية مع الفشل الكلوي.',
+    category: 'Antibiotic',
+    categoryAr: 'مضاد حيوي',
+    descriptionEn: '4th Gen Cephalosporin. Severe hospital-acquired infections. Neurotoxicity risk in renal failure.',
+    descriptionAr: 'سيفالوسبورين جيل رابع. لعدوى المستشفيات الشديدة. خطر سمية عصبية مع الفشل الكلوي.',
     doseEn: '1-2g IV q8-12h',
     doseAr: '1-2 جرام وريد كل 8-12 ساعة'
   },
@@ -557,7 +557,5 @@ export const DRUGS: Drug[] = [
   }
 ];
 
-// NOTE: GUIDELINES and INSTRUCTIONS are removed from here as they are now fully implemented 
-// as rich UI components in ClinicalGuidelines.tsx and PatientInstructions.tsx respectively.
 export const GUIDELINES: Guideline[] = []; 
 export const INSTRUCTIONS: PatientInstruction[] = [];
